@@ -1,0 +1,51 @@
+{
+    "research_id": "template_research_id",
+    "topic": "Research Topic Title",
+    "objectives": [
+      "Primary research objective",
+      "Secondary research objective",
+      "Tertiary research objective"
+    ],
+    "questions": [
+      "Key research question 1?",
+      "Key research question 2?",
+      "Key research question 3?"
+    ],
+    "methodology": {
+      "approach": "systematic secondary research",
+      "frameworks": ["literature_review", "competitive_analysis", "swot_analysis"],
+      "sources": [
+        "academic_journals",
+        "industry_reports",
+        "government_databases",
+        "company_financial_reports",
+        "expert_interviews"
+      ],
+      "quality_criteria": [
+        "source_credibility_assessment",
+        "data_recency_verification",
+        "relevance_to_objectives_scoring"
+      ]
+    },
+    "timeline": {
+      "total_duration": "5-7 days",
+      "phases": {
+        "planning": "1 day",
+        "data_collection": "2-3 days", 
+        "analysis": "1-2 days",
+        "reporting": "1 day"
+      }
+    },
+    "deliverables": [
+      "comprehensive_research_report",
+      "executive_summary",
+      "swot_analysis_matrix",
+      "strategic_recommendations",
+      "source_bibliography"
+    ],
+    "success_metrics": [
+      "research_comprehensiveness_score",
+      "source_quality_assessment",
+      "stakeholder_satisfaction_rating"
+    ]
+  }

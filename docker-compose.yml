@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  secondary-research-workflow:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - NOTION_API_KEY=${NOTION_API_KEY}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - GOOGLE_SHEETS_CREDENTIALS=/app/credentials/google_credentials.json
+      - MAX_CONCURRENT_AGENTS=${MAX_CONCURRENT_AGENTS:-5}
+      - AGENT_TIMEOUT=${AGENT_TIMEOUT:-300}
+      - WORKFLOW_TIMEOUT=${WORKFLOW_TIMEOUT:-1800}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./credentials:/app/credentials:ro
+      - ./data/outputs:/app/data/outputs
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    mem_limit: 4g
+    cpus: 2.0
+
+  # Optional: Add monitoring services
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
