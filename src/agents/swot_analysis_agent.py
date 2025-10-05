@@ -3,11 +3,8 @@ SWOT Analysis Agent implementation.
 """
 import os
 from typing import Dict, Any, List
-from google.adk.agents import Agent
-from google.adk.tools.tool_context import ToolContext
 
 from .base_agent import BaseResearchAgent
-from tools.google_sheets_client import GoogleSheetsClient
 
 
 class SWOTAnalysisAgent(BaseResearchAgent):
@@ -15,22 +12,10 @@ class SWOTAnalysisAgent(BaseResearchAgent):
     
     def __init__(self):
         super().__init__("swot_analysis_agent")
-        self.sheets_client = GoogleSheetsClient()
-    
-    def _create_agent(self) -> Agent:
-        """Create the SWOT analysis agent."""
-        return Agent(
-            name=self.name,
-            model=self.model,
-            description=self.get_description(),
-            instruction=self.get_instruction(),
-            tools=self.get_tools(),
-            output_key="swot_analysis_complete"
-        )
     
     def get_tools(self) -> List:
         """Get tools for SWOT analysis."""
-        return [conduct_swot_analysis_tool]
+        return []
     
     def get_description(self) -> str:
         """Get agent description."""
@@ -50,7 +35,7 @@ class SWOTAnalysisAgent(BaseResearchAgent):
 def conduct_swot_analysis_tool(
     synthesis_results: dict,
     topic: str,
-    tool_context: ToolContext
+    tool_context
 ) -> Dict[str, Any]:
     """Tool for conducting comprehensive SWOT analysis."""
     

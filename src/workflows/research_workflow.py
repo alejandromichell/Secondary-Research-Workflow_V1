@@ -4,20 +4,19 @@ Main research workflow coordination.
 
 import asyncio
 from typing import Dict, Any
-from google.adk.tools.tool_context import ToolContext
 
 from utils.data_validation import validate_research_request
-from agents.orchestration_agent import OrchestrationAgent
+from tools.anthropic_research_client import AnthropicResearchClient
 
 
 class SecondaryResearchWorkflow:
     """Main workflow manager for secondary research."""
     
     def __init__(self):
-        self.orchestration_agent = OrchestrationAgent()
+        self.anthropic_client = AnthropicResearchClient()
     
     async def execute_research(self, research_request: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute the complete secondary research workflow using an agent-based approach."""
+        """Execute the complete secondary research workflow using Anthropic."""
         
         # Validate input
         if not validate_research_request(research_request):
@@ -26,50 +25,33 @@ class SecondaryResearchWorkflow:
                 "error": "Invalid research request format"
             }
         
-        print(">>> Starting agent-based research workflow...", flush=True)
+        print(">>> Starting Anthropic-powered research workflow...", flush=True)
         
         try:
-            # Create a query from the research request
-            topic = research_request.get("topic")
-            questions = research_request.get("questions")
-            query = f"Please conduct a research on the topic: {topic}. Here are some specific questions: {', '.join(questions)}"
-
-            # Run the orchestration agent
-            agent_result_str = await self.orchestration_agent.run(query)
+            # Use Anthropic client to conduct real research
+            research_results = await self.anthropic_client.conduct_research(research_request)
             
-            # Parse the result
-            try:
-                agent_result = json.loads(agent_result_str)
-            except json.JSONDecodeError:
-                # If the result is not a valid JSON, treat it as a raw string result
-                agent_result = {
-                    "status": "success",
-                    "orchestration_results": {
-                        "report": agent_result_str
-                    }
-                }
-
-            if agent_result["status"] == "success":
-                print("<<< Agent-based research workflow completed successfully.", flush=True)
+            if research_results["status"] == "success":
+                print("<<< Anthropic research workflow completed successfully.", flush=True)
                 
                 return {
                     "status": "complete",
-                    "research_results": agent_result["orchestration_results"],
-                    "metadata": agent_result.get("metadata", {}),
+                    "research_results": research_results["research_results"],
+                    "metadata": research_results["metadata"],
                     "session_state": {
                         "research_request": research_request,
                         "workflow_stage": "completed",
                         "timestamp": asyncio.get_event_loop().time(),
-                        "agent_execution_log": ["orchestration_agent"]
+                        "agent_execution_log": ["research_planning", "data_collection_strategy", "analysis_synthesis", "swot_analysis", "final_report"]
                     },
-                    "session_id": f"research_{topic.replace(' ', '_')}"
+                    "session_id": f"research_{research_request.get('topic', 'default').replace(' ', '_')}"
                 }
             else:
-                print(f"!!! Agent-based research failed: {agent_result.get('error', 'Unknown error')}", flush=True)
+                print(f"!!! Anthropic research failed: {research_results.get('error', 'Unknown error')}", flush=True)
                 return {
                     "status": "error",
-                    "error": agent_result.get('error', 'Research failed'),
-                    "session_id": f"research_{topic.replace(' ', '_')}"
+                    "error": research_results.get('error', 'Research failed'),
+                    "session_id": f"research_{research_request.get('topic', 'default').replace(' ', '_')}"
                 }
             
         except Exception as e:

@@ -9,7 +9,11 @@ from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
-from .workflows.research_workflow import SecondaryResearchWorkflow
+from .workflows.simple_live_workflow import SimpleLiveResearchWorkflow
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from utils.html_report_generator import HTMLReportGenerator
 import asyncio
 import json
 import os
@@ -22,12 +26,12 @@ class ResearchRequest(BaseModel):
 
 # --- FastAPI Application ---
 app = FastAPI(
-    title="Secondary Research Workflow API (Simplified Mode)",
-    description="An API to initiate and manage simplified research workflows.",
-    version="1.1.0"
+    title="Secondary Research Workflow API (Live Data Mode)",
+    description="An API to initiate and manage live data collection research workflows.",
+    version="2.0.0"
 )
 
-workflow = SecondaryResearchWorkflow()
+workflow = SimpleLiveResearchWorkflow()
 
 # Persistent storage for research results
 STORAGE_FILE = "research_results.json"
@@ -428,8 +432,9 @@ async def get_research_report_view(session_id: str):
         research_results = result.get("research_results", {})
         topic = research_results.get("topic", "Unknown Topic")
         
-        # Generate formatted HTML report
-        html_content = generate_html_report(topic, research_results, result.get("metadata", {}))
+        # Generate formatted HTML report using the separate HTML generator
+        html_generator = HTMLReportGenerator()
+        html_content = html_generator.generate_report(research_results)
         return HTMLResponse(html_content)
     
     return HTMLResponse("""

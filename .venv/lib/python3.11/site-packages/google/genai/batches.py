@@ -467,6 +467,24 @@ def _CitationMetadata_from_mldev(
   return to_object
 
 
+def _ComputerUse_to_mldev(
+    from_object: Union[dict[str, Any], object],
+    parent_object: Optional[dict[str, Any]] = None,
+) -> dict[str, Any]:
+  to_object: dict[str, Any] = {}
+  if getv(from_object, ['environment']) is not None:
+    setv(to_object, ['environment'], getv(from_object, ['environment']))
+
+  if getv(from_object, ['excluded_predefined_functions']) is not None:
+    setv(
+        to_object,
+        ['excludedPredefinedFunctions'],
+        getv(from_object, ['excluded_predefined_functions']),
+    )
+
+  return to_object
+
+
 def _ContentEmbedding_from_mldev(
     from_object: Union[dict[str, Any], object],
     parent_object: Optional[dict[str, Any]] = None,
@@ -1131,6 +1149,13 @@ def _GenerateContentConfig_to_mldev(
         ),
     )
 
+  if getv(from_object, ['image_config']) is not None:
+    setv(
+        to_object,
+        ['imageConfig'],
+        _ImageConfig_to_mldev(getv(from_object, ['image_config']), to_object),
+    )
+
   return to_object
 
 
@@ -1234,6 +1259,17 @@ def _GoogleSearch_to_mldev(
     raise ValueError(
         'exclude_domains parameter is not supported in Gemini API.'
     )
+
+  return to_object
+
+
+def _ImageConfig_to_mldev(
+    from_object: Union[dict[str, Any], object],
+    parent_object: Optional[dict[str, Any]] = None,
+) -> dict[str, Any]:
+  to_object: dict[str, Any] = {}
+  if getv(from_object, ['aspect_ratio']) is not None:
+    setv(to_object, ['aspectRatio'], getv(from_object, ['aspect_ratio']))
 
   return to_object
 
@@ -1877,24 +1913,6 @@ def _ThinkingConfig_to_mldev(
   return to_object
 
 
-def _ToolComputerUse_to_mldev(
-    from_object: Union[dict[str, Any], object],
-    parent_object: Optional[dict[str, Any]] = None,
-) -> dict[str, Any]:
-  to_object: dict[str, Any] = {}
-  if getv(from_object, ['environment']) is not None:
-    setv(to_object, ['environment'], getv(from_object, ['environment']))
-
-  if getv(from_object, ['excluded_predefined_functions']) is not None:
-    setv(
-        to_object,
-        ['excludedPredefinedFunctions'],
-        getv(from_object, ['excluded_predefined_functions']),
-    )
-
-  return to_object
-
-
 def _ToolConfig_to_mldev(
     from_object: Union[dict[str, Any], object],
     parent_object: Optional[dict[str, Any]] = None,
@@ -1974,9 +1992,7 @@ def _Tool_to_mldev(
     setv(
         to_object,
         ['computerUse'],
-        _ToolComputerUse_to_mldev(
-            getv(from_object, ['computer_use']), to_object
-        ),
+        _ComputerUse_to_mldev(getv(from_object, ['computer_use']), to_object),
     )
 
   if getv(from_object, ['code_execution']) is not None:

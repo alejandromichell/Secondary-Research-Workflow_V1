@@ -3,9 +3,6 @@ Report Generation Agent implementation.
 """
 import os
 from typing import Dict, Any, List
-from google.adk.agents import Agent
-from google.adk.tools.tool_context import ToolContext
-from google.adk.models.lite_llm import LiteLlm
 
 from .base_agent import BaseResearchAgent
 
@@ -16,20 +13,9 @@ class ReportGenerationAgent(BaseResearchAgent):
     def __init__(self):
         super().__init__("report_generation_agent")
     
-    def _create_agent(self) -> Agent:
-        """Create the report generation agent using Claude for superior writing."""
-        return Agent(
-            name=self.name,
-            model=LiteLlm(model="anthropic/claude-sonnet-4-20250514"),
-            description=self.get_description(),
-            instruction=self.get_instruction(),
-            tools=self.get_tools(),
-            output_key="final_report_generated"
-        )
-    
     def get_tools(self) -> List:
         """Get tools for report generation."""
-        return [generate_comprehensive_report_tool]
+        return []
     
     def get_description(self) -> str:
         """Get agent description."""
@@ -50,7 +36,7 @@ def generate_comprehensive_report_tool(
     research_plan: dict,
     synthesis_results: dict,
     swot_analysis: dict,
-    tool_context: ToolContext
+    tool_context
 ) -> Dict[str, Any]:
     """Tool for generating comprehensive final research reports."""
     
