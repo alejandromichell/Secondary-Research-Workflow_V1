@@ -1,0 +1,138 @@
+﻿Resources To Consider
+
+Company & Industry Intelligence
+
+Company Information:
+
+
+* SEC EDGAR Database (sec.gov/edgar) - Public company filings, 10-Ks, 10-Qs, proxy statements
+* Google Finance - Company financials, stock performance, key metrics
+* Yahoo Finance - Financial data, analyst ratings, company profiles
+* Crunchbase (free tier) - Startup and private company data, funding rounds
+* OpenCorporates - Global corporate registry data
+* Companies House (UK) - British company filings and accounts
+
+
+Industry Research:
+
+
+* Statista (free tier) - Statistics, market data, industry insights
+* Pew Research Center - Consumer trends, demographic data, social research
+* Trade association websites - Industry-specific reports and white papers
+* Industry journals and publications - Often offer free articles and insights
+
+
+Market & Competitive Analysis
+
+
+* Google Trends - Search trends, geographic interest, related queries
+* Builtwith - Technology stack analysis for competitors
+* Alexa Internet Archive (Wayback Machine) - Historical website data
+* Product Hunt - New product launches and innovations
+* G2/Capterra - Software reviews and competitive comparisons
+
+
+Economic & Market Data
+
+
+* Federal Reserve Economic Data (FRED) - Economic indicators, financial data
+* Bureau of Economic Analysis - GDP, economic growth, industry data
+* Bureau of Labor Statistics - Employment, wages, productivity data
+* World Bank Open Data - Global development and economic indicators
+* IMF Data - International financial statistics
+* OECD Data - Economic statistics for developed countries
+* Census Bureau - Demographic and economic census data
+
+
+News & Current Events
+
+
+* Google News - Current events, company news, industry updates
+* Reddit (industry subreddits) - Community insights, sentiment analysis
+* LinkedIn - Company updates, executive movements, thought leadership
+* Twitter/X Advanced Search - Real-time sentiment, trending topics
+* Press release distribution sites (PR Newswire, Business Wire) - Company announcements
+
+
+Academic & Research Resources
+
+
+* Google Scholar - Academic papers, research studies, citations
+* SSRN (Social Science Research Network) - Working papers, research
+* ResearchGate - Academic publications and researcher networks
+* PubMed - Life sciences and biomedical research
+* arXiv - Pre-print scientific papers
+
+
+Patent & Innovation Analysis
+
+
+* Google Patents - Patent search and analysis
+* USPTO Patent Database - US patent filings
+* WIPO Global Brand Database - Trademark information
+* European Patent Office (Espacenet) - European patent data
+
+
+Financial Analysis Tools
+
+
+* Finviz - Stock screener, financial visualizations
+* Macrotrends - Long-term financial trends and ratios
+* MarketWatch - Market data and financial news
+
+
+Consumer & Social Insights
+
+
+* Trustpilot - Customer reviews and satisfaction data
+* Glassdoor - Employee reviews, company culture insights
+* Indeed Company Reviews - Workplace insights
+* App Store/Google Play reviews - Product feedback analysis
+
+
+Government & Regulatory Resources
+
+
+* USA.gov - Federal government data and reports
+* Data.gov - US government open data
+* FTC Consumer Sentinel - Consumer complaint data
+* FDA databases - Drug approvals, medical device data
+* EPA databases - Environmental compliance and violations
+
+
+International Resources
+
+
+* Eurostat - European statistical data
+* Trading Economics - Global economic indicators
+* UN Data - International development statistics
+* Country-specific government databases - Local market data
+
+
+AI-Powered Research Tools
+
+
+* Perplexity AI - AI-powered search and summarization
+
+
+Specialized Tools
+
+
+* Internet Archive - Historical web pages and documents
+* Think tanks (Brookings, RAND, etc.) - Policy research and analysis
+* University research centers - Industry-specific studies
+* Kaggle Datasets - Data for analysis projects
+* GitHub - Open-source projects, technology trends
+
+
+Pro Tips for Effective Secondary Research:
+
+
+* Cross-reference multiple sources for validation
+* Check publication dates to ensure current relevance
+* Use library resources - Many public/university libraries offer free access to premium databases
+* Set up Google Alerts for ongoing monitoring
+* Archive important findings as web content can disappear
+* Document your sources systematically for citations
+* Look for original sources rather than aggregated summaries
+* Use advanced search operators in Google (site:, filetype:, etc.)

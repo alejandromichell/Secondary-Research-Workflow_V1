@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from .workflows.simple_live_workflow import SimpleLiveResearchWorkflow
 from .utils.questionnaire_processor import QuestionnaireProcessor
 from .utils.research_plan_tracker import ResearchPlanTracker, TaskStatus, PlanStatus
+from .agents.root_orchestrator_agent import RootOrchestratorAgent
 import asyncio
 import json
 import os
@@ -59,6 +60,7 @@ app = FastAPI(
 workflow = SimpleLiveResearchWorkflow()
 questionnaire_processor = QuestionnaireProcessor()
 plan_tracker = ResearchPlanTracker()
+root_orchestrator = RootOrchestratorAgent()
 
 # Persistent storage for research results
 STORAGE_FILE = "research_results.json"
@@ -713,9 +715,9 @@ async def get_research_report_html(session_id: str):
     
     if result.get("status") == "complete":
         try:
-            research_results = result.get("research_results", {})
-            topic = research_results.get("topic", "Unknown Topic")
-            
+        research_results = result.get("research_results", {})
+        topic = research_results.get("topic", "Unknown Topic")
+        
             # Generate formatted HTML report using inline HTML generation
             html_content = generate_simple_html_report(research_results)
             return HTMLResponse(html_content)
@@ -773,12 +775,12 @@ async def get_research_report_view(session_id: str):
     
     if result.get("status") == "complete":
         try:
-            research_results = result.get("research_results", {})
-            topic = research_results.get("topic", "Unknown Topic")
-            
+        research_results = result.get("research_results", {})
+        topic = research_results.get("topic", "Unknown Topic")
+        
             # Generate formatted HTML report using inline HTML generation
             html_content = generate_simple_html_report(research_results)
-            return HTMLResponse(html_content)
+        return HTMLResponse(html_content)
         except Exception as e:
             print(f"Error generating HTML report: {e}")
             import traceback
@@ -1248,6 +1250,113 @@ async def get_homepage():
             </ul>
         </body></html>
         """, status_code=500)
+
+# --- Multi-Agent Orchestration Endpoints ---
+
+@app.post("/research-workflow/execute/{plan_id}")
+async def execute_research_workflow(plan_id: str):
+    """
+    Execute the complete multi-agent research workflow for a given plan.
+    """
+    try:
+        # Initialize the root orchestrator
+        await root_orchestrator.initialize()
+        
+        try:
+            # Execute the research workflow
+            result = await root_orchestrator.execute_research_workflow(plan_id)
+            
+            return {
+                "status": "success" if result.get("status") == "completed" else "in_progress",
+                "workflow_result": result,
+                "message": f"Research workflow {'completed' if result.get('status') == 'completed' else 'in progress'} for plan {plan_id}"
+            }
+            
+        finally:
+            # Clean up the orchestrator
+            await root_orchestrator.cleanup()
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": f"Failed to execute research workflow for plan {plan_id}"
+        }
+
+@app.get("/research-workflow/status/{plan_id}")
+async def get_workflow_status(plan_id: str):
+    """
+    Get the current status of a research workflow.
+    """
+    try:
+        await root_orchestrator.initialize()
+        
+        try:
+            status = await root_orchestrator.get_workflow_status(plan_id)
+            return {
+                "status": "success",
+                "workflow_status": status
+            }
+            
+        finally:
+            await root_orchestrator.cleanup()
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": f"Failed to get workflow status for plan {plan_id}"
+        }
+
+@app.post("/research-workflow/pause/{plan_id}")
+async def pause_workflow(plan_id: str):
+    """
+    Pause a research workflow.
+    """
+    try:
+        await root_orchestrator.initialize()
+        
+        try:
+            result = await root_orchestrator.pause_workflow(plan_id)
+            return {
+                "status": "success" if result.get("status") == "success" else "error",
+                "result": result
+            }
+            
+        finally:
+            await root_orchestrator.cleanup()
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": f"Failed to pause workflow for plan {plan_id}"
+        }
+
+@app.post("/research-workflow/resume/{plan_id}")
+async def resume_workflow(plan_id: str):
+    """
+    Resume a paused research workflow.
+    """
+    try:
+        await root_orchestrator.initialize()
+        
+        try:
+            result = await root_orchestrator.resume_workflow(plan_id)
+            return {
+                "status": "success" if result.get("status") == "success" else "error",
+                "result": result
+            }
+            
+        finally:
+            await root_orchestrator.cleanup()
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": f"Failed to resume workflow for plan {plan_id}"
+        }
 
 @app.get("/api/status")
 async def api_status():
