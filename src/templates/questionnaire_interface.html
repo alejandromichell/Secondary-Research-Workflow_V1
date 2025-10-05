@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Foundation Questionnaire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 6px;
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: #2ecc71;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .step-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .step-description {
+            color: #6c757d;
+            font-size: 1.1em;
+        }
+        
+        .question-group {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .question-group h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .question label {
+            display: block;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .question textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .question textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .question input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+        
+        .question input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e9ecef;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step-dot.active {
+            background: #3498db;
+            transform: scale(1.2);
+        }
+        
+        .step-dot.completed {
+            background: #2ecc71;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #3498db;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border-color: #2ecc71;
+            color: #155724;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .summary {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .summary h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .summary-value {
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Research Foundation Questionnaire</h1>
+            <div class="subtitle">Complete the following questions to establish your research foundation</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Step 1: Foundation Questions -->
+            <div class="step active" id="step1">
+                <div class="step-header">
+                    <h2 class="step-title">Core Research Foundation</h2>
+                    <p class="step-description">Please answer these essential questions to establish your research foundation. All questions are mandatory.</p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <strong>Important:</strong> These questions must be completed before proceeding with research planning. Your responses will guide the entire research process.
+                </div>
+                
+                <form id="foundationForm">
+                    <div class="question-group">
+                        <h3>1. Primary Research Objective</h3>
+                        <div class="question">
+                            <label for="primary_objective">What is the primary objective of your research? What specific strategic goal are you trying to achieve?</label>
+                            <textarea id="primary_objective" name="primary_objective" placeholder="Describe your main research objective and strategic goals..." required></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="business_decision">What key business decision will this research inform?</label>
+                            <input type="text" id="business_decision" name="business_decision" placeholder="e.g., market entry, product launch, strategic planning, investment decision" required>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <h3>2. Research Subject & Scope</h3>
+                        <div class="question">
+                            <label for="main_subject">What is the main subject of analysis?</label>
+                            <input type="text" id="main_subject" name="main_subject" placeholder="Company name, industry, market, or product/service" required>
+                        </div>
+                        <div class="question">
+                            <label for="organization_details">If analyzing a specific organization, please provide details:</label>
+                            <textarea id="organization_details" name="organization_details" placeholder="Company name, primary industry, approximate size (revenue/employees), and main products/services"></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="geographic_scope">What is the geographic scope?</label>
+                            <input type="text" id="geographic_scope" name="geographic_scope" placeholder="local, regional, national, global, or specific countries/regions" required>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <h3>3. Critical Research Questions</h3>
+                        <div class="question">
+                            <label for="critical_questions">What are the 3-5 most important questions this research must answer?</label>
+                            <textarea id="critical_questions" name="critical_questions" placeholder="List the key questions that must be answered by this research..." required></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="areas_of_concern">Are there specific areas of concern or opportunity you want emphasized?</label>
+                            <textarea id="areas_of_concern" name="areas_of_concern" placeholder="Describe any specific areas of focus or concern..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <h3>4. Timeline Requirements</h3>
+                        <div class="question">
+                            <label for="start_end_dates">What are the starting and finishing dates?</label>
+                            <input type="text" id="start_end_dates" name="start_end_dates" placeholder="e.g., January 1, 2024 - March 31, 2024" required>
+                        </div>
+                        <div class="question">
+                            <label for="milestone_dates">What are important milestone dates in between?</label>
+                            <textarea id="milestone_dates" name="milestone_dates" placeholder="List key milestone dates and deliverables..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 2: SWOT Assessment Questions -->
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <h2 class="step-title">SWOT Analysis Assessment</h2>
+                    <p class="step-description">Please provide information needed for comprehensive SWOT analysis.</p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <strong>Note:</strong> These questions will help ensure the SWOT analysis is comprehensive and targeted to your specific needs.
+                </div>
+                
+                <form id="swotForm">
+                    <div class="question-group">
+                        <h3>1. Business/Organization Context</h3>
+                        <div class="question">
+                            <label for="org_name_industry">What is the name and primary industry of the organization being analyzed?</label>
+                            <input type="text" id="org_name_industry" name="org_name_industry" placeholder="Organization name and primary industry" required>
+                        </div>
+                        <div class="question">
+                            <label for="org_size">What is the organization's size?</label>
+                            <input type="text" id="org_size" name="org_size" placeholder="employees, revenue, market cap if public" required>
+                        </div>
+                        <div class="question">
+                            <label for="core_products_services">What are the organization's core products/services and primary markets?</label>
+                            <textarea id="core_products_services" name="core_products_services" placeholder="Describe core products/services and target markets..." required></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="analysis_timeframe">What is the time frame for this analysis?</label>
+                            <input type="text" id="analysis_timeframe" name="analysis_timeframe" placeholder="current state, 1-year outlook, 3-year strategic" required>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <h3>2. Analysis Scope</h3>
+                        <div class="question">
+                            <label for="analysis_scope">Is this a comprehensive organizational SWOT or focused on specific business units/products?</label>
+                            <textarea id="analysis_scope" name="analysis_scope" placeholder="Describe the scope of the SWOT analysis..." required></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="strategic_decisions">What are the primary strategic decisions this analysis will inform?</label>
+                            <textarea id="strategic_decisions" name="strategic_decisions" placeholder="List the key strategic decisions..." required></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="competitors_segments">Are there specific competitors or market segments that should be prioritized?</label>
+                            <textarea id="competitors_segments" name="competitors_segments" placeholder="List key competitors and market segments..."></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="geographical_markets">What geographical markets should be included?</label>
+                            <input type="text" id="geographical_markets" name="geographical_markets" placeholder="List geographical markets to include" required>
+                        </div>
+                    </div>
+                    
+                    <div class="question-group">
+                        <h3>3. Stakeholder Requirements</h3>
+                        <div class="question">
+                            <label for="primary_audience">Who is the primary audience for this analysis?</label>
+                            <input type="text" id="primary_audience" name="primary_audience" placeholder="executives, investors, board members" required>
+                        </div>
+                        <div class="question">
+                            <label for="detail_level">What level of detail is required?</label>
+                            <input type="text" id="detail_level" name="detail_level" placeholder="high-level strategic vs. operational detail" required>
+                        </div>
+                        <div class="question">
+                            <label for="emphasis_areas">Are there specific areas of concern or opportunity to emphasize?</label>
+                            <textarea id="emphasis_areas" name="emphasis_areas" placeholder="Describe areas to emphasize..."></textarea>
+                        </div>
+                        <div class="question">
+                            <label for="deliverable_format">What format is preferred for final deliverables?</label>
+                            <input type="text" id="deliverable_format" name="deliverable_format" placeholder="e.g., executive summary, detailed report, presentation" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 3: Review and Submit -->
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <h2 class="step-title">Review and Submit</h2>
+                    <p class="step-description">Please review your responses before submitting.</p>
+                </div>
+                
+                <div class="summary" id="responseSummary">
+                    <!-- Summary will be populated by JavaScript -->
+                </div>
+                
+                <div class="alert alert-warning">
+                    <strong>Final Check:</strong> Please ensure all required fields are completed. You will not be able to proceed with research planning until all questions are answered.
+                </div>
+            </div>
+            
+            <!-- Step 4: Success -->
+            <div class="step" id="step4">
+                <div class="step-header">
+                    <h2 class="step-title">Questionnaire Complete!</h2>
+                    <p class="step-description">Your research foundation has been established successfully.</p>
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>Success!</strong> Your questionnaire responses have been saved. You can now proceed with research planning.
+                </div>
+                
+                <div class="summary" id="successSummary">
+                    <!-- Success details will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Step Indicators -->
+            <div class="step-indicator">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+                <div class="step-dot" data-step="4"></div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">Previous</button>
+                <div></div>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next</button>
+            </div>
+            
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing your responses...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let sessionId = null;
+        
+        // Generate session ID
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            sessionId = generateSessionId();
+            updateProgress();
+            updateStepIndicators();
+        });
+        
+        // Change step
+        function changeStep(direction) {
+            if (direction === 1) {
+                // Next button
+                if (currentStep === 1) {
+                    if (!validateFoundationForm()) return;
+                } else if (currentStep === 2) {
+                    if (!validateSwotForm()) return;
+                } else if (currentStep === 3) {
+                    submitQuestionnaire();
+                    return;
+                }
+            }
+            
+            if (direction === -1 && currentStep > 1) {
+                currentStep--;
+            } else if (direction === 1 && currentStep < totalSteps) {
+                currentStep++;
+            }
+            
+            showStep(currentStep);
+            updateProgress();
+            updateStepIndicators();
+            updateNavigation();
+        }
+        
+        // Show step
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            if (step === 3) {
+                generateSummary();
+            } else if (step === 4) {
+                generateSuccessSummary();
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        // Update step indicators
+        function updateStepIndicators() {
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index + 1 === currentStep) {
+                    dot.classList.add('active');
+                } else if (index + 1 < currentStep) {
+                    dot.classList.add('completed');
+                }
+            });
+        }
+        
+        // Update navigation buttons
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+            } else if (currentStep === 3) {
+                nextBtn.textContent = 'Submit';
+                nextBtn.className = 'btn btn-success';
+            } else {
+                nextBtn.textContent = 'Next';
+                nextBtn.className = 'btn btn-primary';
+            }
+        }
+        
+        // Validate foundation form
+        function validateFoundationForm() {
+            const requiredFields = ['primary_objective', 'business_decision', 'main_subject', 'geographic_scope', 'critical_questions', 'start_end_dates'];
+            
+            for (const field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert(`Please fill in the required field: ${element.previousElementSibling.textContent}`);
+                    element.focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Validate SWOT form
+        function validateSwotForm() {
+            const requiredFields = ['org_name_industry', 'org_size', 'core_products_services', 'analysis_timeframe', 'analysis_scope', 'strategic_decisions', 'geographical_markets', 'primary_audience', 'detail_level', 'deliverable_format'];
+            
+            for (const field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert(`Please fill in the required field: ${element.previousElementSibling.textContent}`);
+                    element.focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Generate summary
+        function generateSummary() {
+            const foundationData = getFormData('foundationForm');
+            const swotData = getFormData('swotForm');
+            
+            const summaryHtml = `
+                <h3>Foundation Responses</h3>
+                <div class="summary-item">
+                    <span class="summary-label">Primary Objective:</span>
+                    <span class="summary-value">${foundationData.primary_objective.substring(0, 100)}${foundationData.primary_objective.length > 100 ? '...' : ''}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Main Subject:</span>
+                    <span class="summary-value">${foundationData.main_subject}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Geographic Scope:</span>
+                    <span class="summary-value">${foundationData.geographic_scope}</span>
+                </div>
+                
+                <h3 style="margin-top: 20px;">SWOT Assessment Responses</h3>
+                <div class="summary-item">
+                    <span class="summary-label">Organization:</span>
+                    <span class="summary-value">${swotData.org_name_industry}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Organization Size:</span>
+                    <span class="summary-value">${swotData.org_size}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Primary Audience:</span>
+                    <span class="summary-value">${swotData.primary_audience}</span>
+                </div>
+            `;
+            
+            document.getElementById('responseSummary').innerHTML = summaryHtml;
+        }
+        
+        // Generate success summary
+        function generateSuccessSummary() {
+            const successHtml = `
+                <h3>Questionnaire Completed Successfully</h3>
+                <div class="summary-item">
+                    <span class="summary-label">Session ID:</span>
+                    <span class="summary-value">${sessionId}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Completion Time:</span>
+                    <span class="summary-value">${new Date().toLocaleString()}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Status:</span>
+                    <span class="summary-value">Ready for Research Planning</span>
+                </div>
+            `;
+            
+            document.getElementById('successSummary').innerHTML = successHtml;
+        }
+        
+        // Get form data
+        function getFormData(formId) {
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            return data;
+        }
+        
+        // Submit questionnaire
+        async function submitQuestionnaire() {
+            const loading = document.getElementById('loading');
+            const content = document.querySelector('.content');
+            
+            // Show loading
+            loading.style.display = 'block';
+            content.style.opacity = '0.5';
+            
+            try {
+                // Prepare foundation responses
+                const foundationData = getFormData('foundationForm');
+                const foundationResponses = {
+                    primary_research_objective: `${foundationData.primary_objective}\n\nBusiness Decision: ${foundationData.business_decision}`,
+                    research_subject_scope: `Main Subject: ${foundationData.main_subject}\n\nOrganization Details: ${foundationData.organization_details}\n\nGeographic Scope: ${foundationData.geographic_scope}`,
+                    critical_research_questions: `Critical Questions: ${foundationData.critical_questions}\n\nAreas of Concern/Opportunity: ${foundationData.areas_of_concern}`,
+                    timeline_requirements: `Start/End Dates: ${foundationData.start_end_dates}\n\nMilestone Dates: ${foundationData.milestone_dates}`
+                };
+                
+                // Prepare SWOT responses
+                const swotData = getFormData('swotForm');
+                const swotResponses = {
+                    business_organization_context: `Organization: ${swotData.org_name_industry}\n\nSize: ${swotData.org_size}\n\nCore Products/Services: ${swotData.core_products_services}\n\nTime Frame: ${swotData.analysis_timeframe}`,
+                    analysis_scope: `Scope: ${swotData.analysis_scope}\n\nStrategic Decisions: ${swotData.strategic_decisions}\n\nCompetitors/Segments: ${swotData.competitors_segments}\n\nGeographical Markets: ${swotData.geographical_markets}`,
+                    stakeholder_requirements: `Primary Audience: ${swotData.primary_audience}\n\nDetail Level: ${swotData.detail_level}\n\nEmphasis Areas: ${swotData.emphasis_areas}\n\nDeliverable Format: ${swotData.deliverable_format}`
+                };
+                
+                // Submit foundation responses
+                const foundationResponse = await fetch('/questionnaire/foundation-responses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        responses: foundationResponses
+                    })
+                });
+                
+                const foundationResult = await foundationResponse.json();
+                
+                if (foundationResult.status !== 'success') {
+                    throw new Error(foundationResult.message || 'Failed to submit foundation responses');
+                }
+                
+                // Submit SWOT responses
+                const swotResponse = await fetch('/questionnaire/swot-responses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        responses: swotResponses
+                    })
+                });
+                
+                const swotResult = await swotResponse.json();
+                
+                if (swotResult.status !== 'success') {
+                    throw new Error(swotResult.message || 'Failed to submit SWOT responses');
+                }
+                
+                // Hide loading and show success
+                loading.style.display = 'none';
+                content.style.opacity = '1';
+                
+                // Move to success step
+                currentStep = 4;
+                showStep(currentStep);
+                updateProgress();
+                updateStepIndicators();
+                updateNavigation();
+                
+            } catch (error) {
+                console.error('Error submitting questionnaire:', error);
+                alert('Error submitting questionnaire: ' + error.message);
+                
+                // Hide loading
+                loading.style.display = 'none';
+                content.style.opacity = '1';
+            }
+        }
+        
+        // Store session ID globally for use in other pages
+        window.getSessionId = function() {
+            return sessionId;
+        };
+    </script>
+</body>
+</html>

@@ -1178,6 +1178,78 @@ async def add_task_note(request: AddTaskNoteRequest):
             "message": "Failed to add task note"
         }
 
-@app.get("/")
-async def root():
+@app.get("/questionnaire", response_class=HTMLResponse)
+async def get_questionnaire_interface():
+    """
+    Serve the questionnaire interface HTML page.
+    """
+    try:
+        # Read the HTML template
+        template_path = os.path.join(os.path.dirname(__file__), 'templates', 'questionnaire_interface.html')
+        
+        with open(template_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+        
+        return HTMLResponse(html_content)
+        
+    except Exception as e:
+        return HTMLResponse(f"""
+        <html><body>
+            <h1>Error</h1>
+            <p>Failed to load questionnaire interface: {str(e)}</p>
+        </body></html>
+        """, status_code=500)
+
+@app.get("/research-plan-dashboard", response_class=HTMLResponse)
+async def get_research_plan_dashboard():
+    """
+    Serve the research plan dashboard HTML page.
+    """
+    try:
+        # Read the HTML template
+        template_path = os.path.join(os.path.dirname(__file__), 'templates', 'research_plan_interface.html')
+        
+        with open(template_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+        
+        return HTMLResponse(html_content)
+        
+    except Exception as e:
+        return HTMLResponse(f"""
+        <html><body>
+            <h1>Error</h1>
+            <p>Failed to load research plan dashboard: {str(e)}</p>
+        </body></html>
+        """, status_code=500)
+
+@app.get("/", response_class=HTMLResponse)
+async def get_homepage():
+    """
+    Serve the main landing page.
+    """
+    try:
+        # Read the HTML template
+        template_path = os.path.join(os.path.dirname(__file__), 'templates', 'index.html')
+        
+        with open(template_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+        
+        return HTMLResponse(html_content)
+        
+    except Exception as e:
+        return HTMLResponse(f"""
+        <html><body>
+            <h1>Secondary Research Workflow API</h1>
+            <p>API is running in Simplified Mode.</p>
+            <p>Error loading homepage: {str(e)}</p>
+            <ul>
+                <li><a href="/questionnaire">Questionnaire Interface</a></li>
+                <li><a href="/research-plan-dashboard">Research Plan Dashboard</a></li>
+            </ul>
+        </body></html>
+        """, status_code=500)
+
+@app.get("/api/status")
+async def api_status():
+    """API status endpoint for programmatic access."""
     return {"message": "Secondary Research Workflow API is running in Simplified Mode."}

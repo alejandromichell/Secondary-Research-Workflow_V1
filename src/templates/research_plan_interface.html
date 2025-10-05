@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Plan Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .progress-section {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .tasks-section {
+            margin-top: 30px;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .task-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-in-progress {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-blocked {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .task-description {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .task-agent {
+            font-weight: 600;
+            color: #3498db;
+        }
+        
+        .task-duration {
+            color: #6c757d;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #3498db;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border-color: #2ecc71;
+            color: #155724;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .task-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Research Plan Dashboard</h1>
+            <div class="subtitle">Monitor and manage your research plans</div>
+        </div>
+        
+        <div class="content">
+            <!-- Create New Plan Section -->
+            <div class="card" style="margin-bottom: 30px;">
+                <h3>Create New Research Plan</h3>
+                <p style="color: #6c757d; margin-bottom: 20px;">Create a new research plan from your completed questionnaire responses.</p>
+                
+                <form id="createPlanForm">
+                    <div class="form-group">
+                        <label for="planTitle">Plan Title</label>
+                        <input type="text" id="planTitle" name="planTitle" placeholder="Enter a descriptive title for your research plan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="planDescription">Plan Description</label>
+                        <textarea id="planDescription" name="planDescription" placeholder="Describe the objectives and scope of this research plan" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sessionId">Session ID</label>
+                        <input type="text" id="sessionId" name="sessionId" placeholder="Enter your questionnaire session ID" required>
+                        <small style="color: #6c757d; font-size: 0.9em;">You can find this in the URL after completing the questionnaire</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Create Research Plan</button>
+                </form>
+            </div>
+            
+            <!-- Plan Selection -->
+            <div class="card" style="margin-bottom: 30px;">
+                <h3>Select Research Plan</h3>
+                <div class="form-group">
+                    <label for="planSelect">Choose a plan to view:</label>
+                    <select id="planSelect" name="planSelect" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1em;">
+                        <option value="">Select a research plan...</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="loadPlan()">Load Plan</button>
+            </div>
+            
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Loading research plan...</p>
+            </div>
+            
+            <!-- Plan Dashboard -->
+            <div id="planDashboard" style="display: none;">
+                <!-- Plan Overview -->
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Plan Overview</h3>
+                        <div id="planOverview">
+                            <!-- Plan details will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Progress Tracking</h3>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%;">0%</div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-number" id="totalTasks">0</div>
+                                    <div class="stat-label">Total Tasks</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number" id="completedTasks">0</div>
+                                    <div class="stat-label">Completed</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number" id="inProgressTasks">0</div>
+                                    <div class="stat-label">In Progress</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number" id="pendingTasks">0</div>
+                                    <div class="stat-label">Pending</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tasks Section -->
+                <div class="tasks-section">
+                    <h3>Research Tasks</h3>
+                    <div id="taskList">
+                        <!-- Tasks will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Plan Selected -->
+            <div id="noPlanSelected" class="alert alert-info">
+                <strong>No Plan Selected:</strong> Please create a new research plan or select an existing one to view the dashboard.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentPlanId = null;
+        let currentPlanData = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for session ID in URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+            if (sessionId) {
+                document.getElementById('sessionId').value = sessionId;
+            }
+            
+            // Set up form submission
+            document.getElementById('createPlanForm').addEventListener('submit', createPlan);
+        });
+        
+        // Create new research plan
+        async function createPlan(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const planData = {
+                title: formData.get('planTitle'),
+                description: formData.get('planDescription'),
+                session_id: formData.get('sessionId')
+            };
+            
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch('/research-plan/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(planData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    alert('Research plan created successfully!');
+                    
+                    // Add to plan select dropdown
+                    const planSelect = document.getElementById('planSelect');
+                    const option = document.createElement('option');
+                    option.value = result.plan.id;
+                    option.textContent = `${result.plan.title} (${result.plan.created_at.split('T')[0]})`;
+                    planSelect.appendChild(option);
+                    
+                    // Select the new plan
+                    planSelect.value = result.plan.id;
+                    loadPlan();
+                    
+                    // Clear form
+                    event.target.reset();
+                } else {
+                    alert('Error creating plan: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error creating plan:', error);
+                alert('Error creating plan: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        // Load selected plan
+        async function loadPlan() {
+            const planSelect = document.getElementById('planSelect');
+            const planId = planSelect.value;
+            
+            if (!planId) {
+                alert('Please select a plan first');
+                return;
+            }
+            
+            currentPlanId = planId;
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            try {
+                // Load plan details
+                const planResponse = await fetch(`/research-plan/${planId}`);
+                const planResult = await planResponse.json();
+                
+                if (planResult.status !== 'success') {
+                    throw new Error(planResult.message || 'Failed to load plan');
+                }
+                
+                currentPlanData = planResult.plan;
+                
+                // Load progress
+                const progressResponse = await fetch(`/research-plan/${planId}/progress`);
+                const progressResult = await progressResponse.json();
+                
+                if (progressResult.status !== 'success') {
+                    throw new Error(progressResult.message || 'Failed to load progress');
+                }
+                
+                // Update UI
+                updatePlanOverview(planResult.plan);
+                updateProgress(progressResult.progress);
+                updateTaskList(planResult.plan.tasks);
+                
+                // Show dashboard
+                document.getElementById('planDashboard').style.display = 'block';
+                document.getElementById('noPlanSelected').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error loading plan:', error);
+                alert('Error loading plan: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        // Update plan overview
+        function updatePlanOverview(plan) {
+            const overviewHtml = `
+                <div class="summary-item">
+                    <span class="summary-label">Plan ID:</span>
+                    <span class="summary-value">${plan.id}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Status:</span>
+                    <span class="summary-value">${plan.status}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Created:</span>
+                    <span class="summary-value">${new Date(plan.created_at).toLocaleDateString()}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Last Updated:</span>
+                    <span class="summary-value">${new Date(plan.updated_at).toLocaleDateString()}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total Tasks:</span>
+                    <span class="summary-value">${plan.tasks.length}</span>
+                </div>
+            `;
+            
+            document.getElementById('planOverview').innerHTML = overviewHtml;
+        }
+        
+        // Update progress
+        function updateProgress(progress) {
+            document.getElementById('progressFill').style.width = progress.progress_percentage + '%';
+            document.getElementById('progressFill').textContent = progress.progress_percentage + '%';
+            
+            document.getElementById('totalTasks').textContent = progress.total_tasks;
+            document.getElementById('completedTasks').textContent = progress.completed_tasks;
+            document.getElementById('inProgressTasks').textContent = progress.in_progress_tasks;
+            document.getElementById('pendingTasks').textContent = progress.pending_tasks;
+        }
+        
+        // Update task list
+        function updateTaskList(tasks) {
+            const taskListHtml = tasks.map(task => `
+                <div class="task-item">
+                    <div class="task-header">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-status status-${task.status}">${task.status.replace('_', ' ')}</div>
+                    </div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-meta">
+                        <div class="task-agent">Assigned to: ${task.assigned_agent}</div>
+                        <div class="task-duration">Est. ${task.estimated_duration} min</div>
+                    </div>
+                    ${task.notes && task.notes.length > 0 ? `
+                        <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 0.9em;">
+                            <strong>Notes:</strong>
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                ${task.notes.map(note => `<li>${note}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+            
+            document.getElementById('taskList').innerHTML = taskListHtml;
+        }
+        
+        // Auto-refresh progress every 30 seconds
+        setInterval(() => {
+            if (currentPlanId) {
+                fetch(`/research-plan/${currentPlanId}/progress`)
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.status === 'success') {
+                            updateProgress(result.progress);
+                        }
+                    })
+                    .catch(error => console.error('Error refreshing progress:', error));
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
