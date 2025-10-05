@@ -1,0 +1,48 @@
+{
+  "session_id": "test_api_session_001",
+  "questionnaire_type": "foundation",
+  "responses": {
+    "primary_research_objective": "Analyze the competitive landscape for AI-powered tax preparation software to inform market entry strategy",
+    "research_subject_scope": "Focus on FinTech companies in the tax preparation space, specifically targeting the US market",
+    "critical_research_questions": "1. What are the key competitive advantages? 2. What are the market gaps? 3. What are the regulatory challenges?",
+    "timeline_requirements": "Start immediately, complete by end of Q1 2024"
+  },
+  "assessment_result": {
+    "status": "complete",
+    "foundation_context": {
+      "research_foundation": {
+        "primary_objective": "Analyze the competitive landscape for AI-powered tax preparation software to inform market entry strategy",
+        "subject_scope": "Focus on FinTech companies in the tax preparation space, specifically targeting the US market",
+        "critical_questions": "1. What are the key competitive advantages? 2. What are the market gaps? 3. What are the regulatory challenges?",
+        "timeline": "Start immediately, complete by end of Q1 2024"
+      },
+      "metadata": {
+        "collection_timestamp": "2025-10-05T18:59:21.725066",
+        "agent": "Research Foundation Agent",
+        "version": "1.0"
+      }
+    },
+    "assessment_summary": {
+      "objective_clarity": "High",
+      "scope_definition": "Complete",
+      "research_focus": "Defined",
+      "timeline_set": "Established",
+      "readiness_for_planning": "Ready"
+    },
+    "validation_result": {
+      "is_complete": true,
+      "missing_sections": [],
+      "validation_details": {
+        "primary_research_objective": "Valid response",
+        "research_subject_scope": "Valid response",
+        "critical_research_questions": "Valid response",
+        "timeline_requirements": "Valid response"
+      },
+      "total_required": 4,
+      "completed": 4
+    },
+    "timestamp": "2025-10-05T18:59:21.725099",
+    "agent": "Research Foundation Agent"
+  },
+  "timestamp": "2025-10-05T18:59:21.725127"
+}

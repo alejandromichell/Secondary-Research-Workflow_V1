@@ -1,0 +1,44 @@
+{
+  "session_id": "test_api_session_001",
+  "questionnaire_type": "swot_assessment",
+  "responses": {
+    "business_organization_context": "AI Tax Solutions Inc. - A startup developing AI-powered tax preparation software. 50 employees, $10M revenue, targeting SMB market.",
+    "analysis_scope": "Comprehensive organizational SWOT focused on competitive positioning in the tax preparation market.",
+    "stakeholder_requirements": "Primary audience: executive team and board members. High-level strategic analysis required."
+  },
+  "assessment_result": {
+    "status": "complete",
+    "swot_context": {
+      "swot_assessment": {
+        "business_context": "AI Tax Solutions Inc. - A startup developing AI-powered tax preparation software. 50 employees, $10M revenue, targeting SMB market.",
+        "analysis_scope": "Comprehensive organizational SWOT focused on competitive positioning in the tax preparation market.",
+        "stakeholder_requirements": "Primary audience: executive team and board members. High-level strategic analysis required."
+      },
+      "metadata": {
+        "collection_timestamp": "2025-10-05T18:59:29.100583",
+        "agent": "SWOT Assessment Agent",
+        "version": "1.0"
+      }
+    },
+    "assessment_summary": {
+      "organization_defined": "Yes",
+      "scope_clarity": "High",
+      "stakeholder_alignment": "Complete",
+      "analysis_readiness": "Ready"
+    },
+    "validation_result": {
+      "is_complete": true,
+      "missing_sections": [],
+      "validation_details": {
+        "business_organization_context": "Valid response",
+        "analysis_scope": "Valid response",
+        "stakeholder_requirements": "Valid response"
+      },
+      "total_required": 3,
+      "completed": 3
+    },
+    "timestamp": "2025-10-05T18:59:29.100601",
+    "agent": "SWOT Assessment Agent"
+  },
+  "timestamp": "2025-10-05T18:59:29.100609"
+}

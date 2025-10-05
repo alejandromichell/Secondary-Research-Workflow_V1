@@ -10,14 +10,26 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 from .workflows.simple_live_workflow import SimpleLiveResearchWorkflow
+from .utils.questionnaire_processor import QuestionnaireProcessor
 import asyncio
 import json
 import os
 from typing import Dict, Any
 
-# --- Pydantic Model for Simplified Incoming Research Requests ---
+# --- Pydantic Models ---
 class ResearchRequest(BaseModel):
     topic: str
+
+class FoundationQuestionnaireRequest(BaseModel):
+    session_id: str
+    responses: Dict[str, Any]
+
+class SWOTQuestionnaireRequest(BaseModel):
+    session_id: str
+    responses: Dict[str, Any]
+
+class ResearchContextRequest(BaseModel):
+    session_id: str
 
 
 # --- FastAPI Application ---
@@ -28,6 +40,7 @@ app = FastAPI(
 )
 
 workflow = SimpleLiveResearchWorkflow()
+questionnaire_processor = QuestionnaireProcessor()
 
 # Persistent storage for research results
 STORAGE_FILE = "research_results.json"
@@ -765,6 +778,158 @@ async def get_research_report_view(session_id: str):
         <p>Research status is unclear.</p>
     </body></html>
     """)
+
+# --- Questionnaire Management Endpoints ---
+
+@app.get("/questionnaire/foundation-questions")
+async def get_foundation_questions():
+    """
+    Get the Core Research Foundation questions that must be answered before research planning.
+    """
+    try:
+        questions = questionnaire_processor.get_foundation_questions()
+        formatted_questions = questionnaire_processor.format_foundation_questions_for_user()
+        
+        return {
+            "status": "success",
+            "questions": questions,
+            "formatted_questions": formatted_questions,
+            "message": "Foundation questions retrieved successfully"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to retrieve foundation questions"
+        }
+
+@app.get("/questionnaire/swot-questions")
+async def get_swot_questions():
+    """
+    Get the SWOT Analysis Assessment questions that must be answered before SWOT analysis.
+    """
+    try:
+        questions = questionnaire_processor.get_swot_questions()
+        formatted_questions = questionnaire_processor.format_swot_questions_for_user()
+        
+        return {
+            "status": "success",
+            "questions": questions,
+            "formatted_questions": formatted_questions,
+            "message": "SWOT assessment questions retrieved successfully"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to retrieve SWOT assessment questions"
+        }
+
+@app.post("/questionnaire/foundation-responses")
+async def submit_foundation_responses(request: FoundationQuestionnaireRequest):
+    """
+    Submit responses to the Core Research Foundation questionnaire.
+    """
+    try:
+        result = questionnaire_processor.process_foundation_responses(
+            request.session_id, 
+            request.responses
+        )
+        
+        return {
+            "status": "success" if result.get("status") == "complete" else "incomplete",
+            "result": result,
+            "message": "Foundation responses processed successfully" if result.get("status") == "complete" else "Foundation responses incomplete"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to process foundation responses"
+        }
+
+@app.post("/questionnaire/swot-responses")
+async def submit_swot_responses(request: SWOTQuestionnaireRequest):
+    """
+    Submit responses to the SWOT Analysis Assessment questionnaire.
+    """
+    try:
+        result = questionnaire_processor.process_swot_responses(
+            request.session_id, 
+            request.responses
+        )
+        
+        return {
+            "status": "success" if result.get("status") == "complete" else "incomplete",
+            "result": result,
+            "message": "SWOT responses processed successfully" if result.get("status") == "complete" else "SWOT responses incomplete"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to process SWOT responses"
+        }
+
+@app.get("/questionnaire/status/{session_id}")
+async def get_questionnaire_status(session_id: str):
+    """
+    Get the status of questionnaires for a specific session.
+    """
+    try:
+        status = questionnaire_processor.get_questionnaire_status(session_id)
+        
+        return {
+            "status": "success",
+            "questionnaire_status": status,
+            "message": "Questionnaire status retrieved successfully"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to retrieve questionnaire status"
+        }
+
+@app.get("/questionnaire/research-context/{session_id}")
+async def get_research_context(session_id: str):
+    """
+    Get the complete research context from both questionnaires for a session.
+    """
+    try:
+        context = questionnaire_processor.get_research_context(session_id)
+        
+        return {
+            "status": "success" if context.get("status") == "complete" else "incomplete",
+            "research_context": context,
+            "message": "Research context retrieved successfully" if context.get("status") == "complete" else "Research context incomplete"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to retrieve research context"
+        }
+
+@app.get("/questionnaire/validate-readiness/{session_id}")
+async def validate_research_readiness(session_id: str):
+    """
+    Validate if a session is ready to proceed with research planning.
+    """
+    try:
+        validation = questionnaire_processor.validate_research_readiness(session_id)
+        
+        return {
+            "status": "success",
+            "validation": validation,
+            "message": "Research readiness validation completed"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to validate research readiness"
+        }
 
 @app.get("/")
 async def root():

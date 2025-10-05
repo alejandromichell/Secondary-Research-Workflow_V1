@@ -1,0 +1,44 @@
+{
+  "session_id": "test_session_20251005_185817",
+  "questionnaire_type": "swot_assessment",
+  "responses": {
+    "business_organization_context": "AI Tax Solutions Inc. - startup with 50 employees",
+    "analysis_scope": "Comprehensive organizational SWOT",
+    "stakeholder_requirements": "Executive team, strategic analysis"
+  },
+  "assessment_result": {
+    "status": "complete",
+    "swot_context": {
+      "swot_assessment": {
+        "business_context": "AI Tax Solutions Inc. - startup with 50 employees",
+        "analysis_scope": "Comprehensive organizational SWOT",
+        "stakeholder_requirements": "Executive team, strategic analysis"
+      },
+      "metadata": {
+        "collection_timestamp": "2025-10-05T18:58:17.892468",
+        "agent": "SWOT Assessment Agent",
+        "version": "1.0"
+      }
+    },
+    "assessment_summary": {
+      "organization_defined": "Yes",
+      "scope_clarity": "High",
+      "stakeholder_alignment": "Complete",
+      "analysis_readiness": "Ready"
+    },
+    "validation_result": {
+      "is_complete": true,
+      "missing_sections": [],
+      "validation_details": {
+        "business_organization_context": "Valid response",
+        "analysis_scope": "Valid response",
+        "stakeholder_requirements": "Valid response"
+      },
+      "total_required": 3,
+      "completed": 3
+    },
+    "timestamp": "2025-10-05T18:58:17.892483",
+    "agent": "SWOT Assessment Agent"
+  },
+  "timestamp": "2025-10-05T18:58:17.892498"
+}
