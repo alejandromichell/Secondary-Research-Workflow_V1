@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from .workflows.simple_live_workflow import SimpleLiveResearchWorkflow
 from .utils.questionnaire_processor import QuestionnaireProcessor
+from .utils.research_plan_tracker import ResearchPlanTracker, TaskStatus, PlanStatus
 import asyncio
 import json
 import os
@@ -31,6 +32,22 @@ class SWOTQuestionnaireRequest(BaseModel):
 class ResearchContextRequest(BaseModel):
     session_id: str
 
+class CreateResearchPlanRequest(BaseModel):
+    title: str
+    description: str
+    session_id: str
+
+class UpdateTaskStatusRequest(BaseModel):
+    plan_id: str
+    task_id: str
+    status: str
+    notes: Optional[str] = None
+
+class AddTaskNoteRequest(BaseModel):
+    plan_id: str
+    task_id: str
+    note: str
+
 
 # --- FastAPI Application ---
 app = FastAPI(
@@ -41,6 +58,7 @@ app = FastAPI(
 
 workflow = SimpleLiveResearchWorkflow()
 questionnaire_processor = QuestionnaireProcessor()
+plan_tracker = ResearchPlanTracker()
 
 # Persistent storage for research results
 STORAGE_FILE = "research_results.json"
@@ -929,6 +947,235 @@ async def validate_research_readiness(session_id: str):
             "status": "error",
             "error": str(e),
             "message": "Failed to validate research readiness"
+        }
+
+# --- Research Plan Management Endpoints ---
+
+@app.post("/research-plan/create")
+async def create_research_plan(request: CreateResearchPlanRequest):
+    """
+    Create a new research plan based on research context from questionnaires.
+    """
+    try:
+        # Validate research readiness first
+        validation = questionnaire_processor.validate_research_readiness(request.session_id)
+        if not validation["ready"]:
+            return {
+                "status": "error",
+                "message": "Research context not ready",
+                "details": validation
+            }
+        
+        # Get research context
+        context = questionnaire_processor.get_research_context(request.session_id)
+        
+        # Create research plan
+        plan = plan_tracker.create_research_plan(
+            request.title,
+            request.description,
+            context
+        )
+        
+        return {
+            "status": "success",
+            "plan": {
+                "id": plan.id,
+                "title": plan.title,
+                "description": plan.description,
+                "status": plan.status.value,
+                "total_tasks": len(plan.tasks),
+                "created_at": plan.created_at
+            },
+            "message": f"Research plan '{request.title}' created successfully with {len(plan.tasks)} tasks"
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to create research plan"
+        }
+
+@app.get("/research-plan/{plan_id}")
+async def get_research_plan(plan_id: str):
+    """
+    Get a research plan by ID.
+    """
+    try:
+        plan = plan_tracker.get_plan(plan_id)
+        if not plan:
+            return {
+                "status": "error",
+                "message": "Research plan not found"
+            }
+        
+        return {
+            "status": "success",
+            "plan": {
+                "id": plan.id,
+                "title": plan.title,
+                "description": plan.description,
+                "status": plan.status.value,
+                "created_at": plan.created_at,
+                "updated_at": plan.updated_at,
+                "started_at": plan.started_at,
+                "completed_at": plan.completed_at,
+                "tasks": [
+                    {
+                        "id": task.id,
+                        "title": task.title,
+                        "description": task.description,
+                        "status": task.status.value,
+                        "priority": task.priority,
+                        "assigned_agent": task.assigned_agent,
+                        "estimated_duration": task.estimated_duration,
+                        "dependencies": task.dependencies,
+                        "created_at": task.created_at,
+                        "started_at": task.started_at,
+                        "completed_at": task.completed_at,
+                        "notes": task.notes
+                    }
+                    for task in plan.tasks
+                ],
+                "metadata": plan.metadata
+            }
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to get research plan"
+        }
+
+@app.get("/research-plan/{plan_id}/progress")
+async def get_plan_progress(plan_id: str):
+    """
+    Get progress information for a research plan.
+    """
+    try:
+        progress = plan_tracker.get_plan_progress(plan_id)
+        
+        if "error" in progress:
+            return {
+                "status": "error",
+                "message": progress["error"]
+            }
+        
+        return {
+            "status": "success",
+            "progress": progress
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to get plan progress"
+        }
+
+@app.get("/research-plan/{plan_id}/next-tasks")
+async def get_next_available_tasks(plan_id: str):
+    """
+    Get tasks that are ready to be started (dependencies met).
+    """
+    try:
+        tasks = plan_tracker.get_next_available_tasks(plan_id)
+        
+        task_data = []
+        for task in tasks:
+            task_data.append({
+                "id": task.id,
+                "title": task.title,
+                "description": task.description,
+                "priority": task.priority,
+                "estimated_duration": task.estimated_duration,
+                "assigned_agent": task.assigned_agent,
+                "dependencies": task.dependencies,
+                "created_at": task.created_at
+            })
+        
+        return {
+            "status": "success",
+            "available_tasks": task_data,
+            "count": len(task_data)
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to get next available tasks"
+        }
+
+@app.post("/research-plan/update-task-status")
+async def update_task_status(request: UpdateTaskStatusRequest):
+    """
+    Update the status of a research task.
+    """
+    try:
+        # Validate status
+        try:
+            status = TaskStatus(request.status)
+        except ValueError:
+            return {
+                "status": "error",
+                "message": f"Invalid status: {request.status}. Valid values: {[s.value for s in TaskStatus]}"
+            }
+        
+        success = plan_tracker.update_task_status(
+            request.plan_id,
+            request.task_id,
+            status,
+            request.notes
+        )
+        
+        if success:
+            return {
+                "status": "success",
+                "message": f"Task {request.task_id} status updated to {request.status}"
+            }
+        else:
+            return {
+                "status": "error",
+                "message": f"Failed to update task {request.task_id} status"
+            }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to update task status"
+        }
+
+@app.post("/research-plan/add-task-note")
+async def add_task_note(request: AddTaskNoteRequest):
+    """
+    Add a note to a specific task.
+    """
+    try:
+        success = plan_tracker.add_task_note(
+            request.plan_id,
+            request.task_id,
+            request.note
+        )
+        
+        if success:
+            return {
+                "status": "success",
+                "message": f"Note added to task {request.task_id}"
+            }
+        else:
+            return {
+                "status": "error",
+                "message": f"Failed to add note to task {request.task_id}"
+            }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to add task note"
         }
 
 @app.get("/")

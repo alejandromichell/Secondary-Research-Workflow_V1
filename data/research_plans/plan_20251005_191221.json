@@ -1,0 +1,157 @@
+{
+  "id": "plan_20251005_191221",
+  "title": "Workflow Test Plan",
+  "description": "Test plan for workflow validation",
+  "status": "active",
+  "created_at": "2025-10-05T19:12:21.392191",
+  "updated_at": "2025-10-05T19:12:21.393937",
+  "started_at": "2025-10-05T19:12:21.393943",
+  "completed_at": null,
+  "tasks": [
+    {
+      "id": "plan_20251005_191221_task_001",
+      "title": "Develop Comprehensive Research Plan",
+      "description": "Create detailed research plan based on foundation context and research objectives",
+      "status": "completed",
+      "priority": 5,
+      "dependencies": [],
+      "estimated_duration": 30,
+      "actual_duration": null,
+      "assigned_agent": "ResearchPlanAgent",
+      "created_at": "2025-10-05T19:12:21.392179",
+      "started_at": "2025-10-05T19:12:21.392881",
+      "completed_at": "2025-10-05T19:12:21.393937",
+      "notes": [
+        "[2025-10-05T19:12:21.392881] Status changed from pending to in_progress: Started by test agent",
+        "[2025-10-05T19:12:21.393426] Working on Develop Comprehensive Research Plan",
+        "[2025-10-05T19:12:21.393937] Status changed from in_progress to completed: Completed by test agent"
+      ],
+      "metadata": {
+        "phase": "planning",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191221_task_002",
+      "title": "Plan Data Collection Strategy",
+      "description": "Identify and plan data collection from various sources (academic, financial, news, regulatory)",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_191221_task_001"
+      ],
+      "estimated_duration": 45,
+      "actual_duration": null,
+      "assigned_agent": "DataCollectionAgent",
+      "created_at": "2025-10-05T19:12:21.392182",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "planning",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191221_task_003",
+      "title": "Execute Live Data Collection",
+      "description": "Collect live data from external APIs, web scraping, and real-time sources",
+      "status": "pending",
+      "priority": 5,
+      "dependencies": [
+        "plan_20251005_191221_task_002"
+      ],
+      "estimated_duration": 120,
+      "actual_duration": null,
+      "assigned_agent": "DataCollectionAgent",
+      "created_at": "2025-10-05T19:12:21.392184",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "data_collection",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191221_task_004",
+      "title": "Analyze and Synthesize Collected Data",
+      "description": "Analyze collected data, identify patterns, and synthesize insights",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_191221_task_003"
+      ],
+      "estimated_duration": 90,
+      "actual_duration": null,
+      "assigned_agent": "SynthesisAgent",
+      "created_at": "2025-10-05T19:12:21.392186",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "analysis",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191221_task_005",
+      "title": "Conduct Comprehensive SWOT Analysis",
+      "description": "Perform SWOT analysis based on collected data and organizational context",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_191221_task_004"
+      ],
+      "estimated_duration": 60,
+      "actual_duration": null,
+      "assigned_agent": "SWOTAnalysisAgent",
+      "created_at": "2025-10-05T19:12:21.392188",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "analysis",
+        "context_section": "swot_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191221_task_006",
+      "title": "Generate Comprehensive Research Report",
+      "description": "Create final research report with findings, analysis, and recommendations",
+      "status": "pending",
+      "priority": 3,
+      "dependencies": [
+        "plan_20251005_191221_task_005"
+      ],
+      "estimated_duration": 45,
+      "actual_duration": null,
+      "assigned_agent": "ReportGenerationAgent",
+      "created_at": "2025-10-05T19:12:21.392190",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "reporting",
+        "context_section": "foundation_context"
+      }
+    }
+  ],
+  "metadata": {
+    "research_context": {
+      "foundation_context": {
+        "research_foundation": {
+          "primary_objective": "Test workflow"
+        }
+      },
+      "swot_context": {
+        "swot_assessment": {
+          "business_context": "Test organization"
+        }
+      }
+    },
+    "total_tasks": 6,
+    "completed_tasks": 1,
+    "progress_percentage": 16.67
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "session_id": "test_plan_session_20251005_191221",
+  "questionnaire_type": "foundation",
+  "responses": {
+    "primary_research_objective": "Strategic market analysis for AI tax software",
+    "research_subject_scope": "FinTech tax preparation market, US focus",
+    "critical_research_questions": "Market size, competitive landscape, technology trends",
+    "timeline_requirements": "Q1 2024 completion"
+  },
+  "assessment_result": {
+    "status": "complete",
+    "foundation_context": {
+      "research_foundation": {
+        "primary_objective": "Strategic market analysis for AI tax software",
+        "subject_scope": "FinTech tax preparation market, US focus",
+        "critical_questions": "Market size, competitive landscape, technology trends",
+        "timeline": "Q1 2024 completion"
+      },
+      "metadata": {
+        "collection_timestamp": "2025-10-05T19:12:21.391058",
+        "agent": "Research Foundation Agent",
+        "version": "1.0"
+      }
+    },
+    "assessment_summary": {
+      "objective_clarity": "Medium",
+      "scope_definition": "Complete",
+      "research_focus": "Defined",
+      "timeline_set": "Established",
+      "readiness_for_planning": "Ready"
+    },
+    "validation_result": {
+      "is_complete": true,
+      "missing_sections": [],
+      "validation_details": {
+        "primary_research_objective": "Valid response",
+        "research_subject_scope": "Valid response",
+        "critical_research_questions": "Valid response",
+        "timeline_requirements": "Valid response"
+      },
+      "total_required": 4,
+      "completed": 4
+    },
+    "timestamp": "2025-10-05T19:12:21.391063",
+    "agent": "Research Foundation Agent"
+  },
+  "timestamp": "2025-10-05T19:12:21.391069"
+}

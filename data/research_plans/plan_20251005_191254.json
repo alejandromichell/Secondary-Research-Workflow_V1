@@ -1,0 +1,186 @@
+{
+  "id": "plan_20251005_191254",
+  "title": "API Test Research Plan",
+  "description": "Test plan created via API",
+  "status": "draft",
+  "created_at": "2025-10-05T19:12:54.035733",
+  "updated_at": "2025-10-05T19:13:50.765092",
+  "started_at": null,
+  "completed_at": null,
+  "tasks": [
+    {
+      "id": "plan_20251005_191254_task_001",
+      "title": "Develop Comprehensive Research Plan",
+      "description": "Create detailed research plan based on foundation context and research objectives",
+      "status": "in_progress",
+      "priority": 5,
+      "dependencies": [],
+      "estimated_duration": 30,
+      "actual_duration": null,
+      "assigned_agent": "ResearchPlanAgent",
+      "created_at": "2025-10-05T19:12:54.035655",
+      "started_at": "2025-10-05T19:13:50.765092",
+      "completed_at": null,
+      "notes": [
+        "[2025-10-05T19:13:50.765092] Status changed from pending to in_progress: Starting research plan development"
+      ],
+      "metadata": {
+        "phase": "planning",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191254_task_002",
+      "title": "Plan Data Collection Strategy",
+      "description": "Identify and plan data collection from various sources (academic, financial, news, regulatory)",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_191254_task_001"
+      ],
+      "estimated_duration": 45,
+      "actual_duration": null,
+      "assigned_agent": "DataCollectionAgent",
+      "created_at": "2025-10-05T19:12:54.035660",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "planning",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191254_task_003",
+      "title": "Execute Live Data Collection",
+      "description": "Collect live data from external APIs, web scraping, and real-time sources",
+      "status": "pending",
+      "priority": 5,
+      "dependencies": [
+        "plan_20251005_191254_task_002"
+      ],
+      "estimated_duration": 120,
+      "actual_duration": null,
+      "assigned_agent": "DataCollectionAgent",
+      "created_at": "2025-10-05T19:12:54.035680",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "data_collection",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191254_task_004",
+      "title": "Analyze and Synthesize Collected Data",
+      "description": "Analyze collected data, identify patterns, and synthesize insights",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_191254_task_003"
+      ],
+      "estimated_duration": 90,
+      "actual_duration": null,
+      "assigned_agent": "SynthesisAgent",
+      "created_at": "2025-10-05T19:12:54.035683",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "analysis",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191254_task_005",
+      "title": "Conduct Comprehensive SWOT Analysis",
+      "description": "Perform SWOT analysis based on collected data and organizational context",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_191254_task_004"
+      ],
+      "estimated_duration": 60,
+      "actual_duration": null,
+      "assigned_agent": "SWOTAnalysisAgent",
+      "created_at": "2025-10-05T19:12:54.035684",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "analysis",
+        "context_section": "swot_context"
+      }
+    },
+    {
+      "id": "plan_20251005_191254_task_006",
+      "title": "Generate Comprehensive Research Report",
+      "description": "Create final research report with findings, analysis, and recommendations",
+      "status": "pending",
+      "priority": 3,
+      "dependencies": [
+        "plan_20251005_191254_task_005"
+      ],
+      "estimated_duration": 45,
+      "actual_duration": null,
+      "assigned_agent": "ReportGenerationAgent",
+      "created_at": "2025-10-05T19:12:54.035720",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "reporting",
+        "context_section": "foundation_context"
+      }
+    }
+  ],
+  "metadata": {
+    "research_context": {
+      "session_id": "test_api_session_001",
+      "foundation_context": {
+        "research_foundation": {
+          "primary_objective": "Analyze the competitive landscape for AI-powered tax preparation software to inform market entry strategy",
+          "subject_scope": "Focus on FinTech companies in the tax preparation space, specifically targeting the US market",
+          "critical_questions": "1. What are the key competitive advantages? 2. What are the market gaps? 3. What are the regulatory challenges?",
+          "timeline": "Start immediately, complete by end of Q1 2024"
+        },
+        "metadata": {
+          "collection_timestamp": "2025-10-05T18:59:21.725066",
+          "agent": "Research Foundation Agent",
+          "version": "1.0"
+        }
+      },
+      "swot_context": {
+        "swot_assessment": {
+          "business_context": "AI Tax Solutions Inc. - A startup developing AI-powered tax preparation software. 50 employees, $10M revenue, targeting SMB market.",
+          "analysis_scope": "Comprehensive organizational SWOT focused on competitive positioning in the tax preparation market.",
+          "stakeholder_requirements": "Primary audience: executive team and board members. High-level strategic analysis required."
+        },
+        "metadata": {
+          "collection_timestamp": "2025-10-05T18:59:29.100583",
+          "agent": "SWOT Assessment Agent",
+          "version": "1.0"
+        }
+      },
+      "foundation_summary": {
+        "objective_clarity": "High",
+        "scope_definition": "Complete",
+        "research_focus": "Defined",
+        "timeline_set": "Established",
+        "readiness_for_planning": "Ready"
+      },
+      "swot_summary": {
+        "organization_defined": "Yes",
+        "scope_clarity": "High",
+        "stakeholder_alignment": "Complete",
+        "analysis_readiness": "Ready"
+      },
+      "collection_timestamp": "2025-10-05T19:12:54.035484",
+      "status": "complete"
+    },
+    "total_tasks": 6,
+    "completed_tasks": 0,
+    "progress_percentage": 0.0
+  }
+}
