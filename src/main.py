@@ -715,9 +715,9 @@ async def get_research_report_html(session_id: str):
     
     if result.get("status") == "complete":
         try:
-        research_results = result.get("research_results", {})
-        topic = research_results.get("topic", "Unknown Topic")
-        
+            research_results = result.get("research_results", {})
+            topic = research_results.get("topic", "Unknown Topic")
+            
             # Generate formatted HTML report using inline HTML generation
             html_content = generate_simple_html_report(research_results)
             return HTMLResponse(html_content)
