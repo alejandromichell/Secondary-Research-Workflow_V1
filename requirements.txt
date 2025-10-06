@@ -1,49 +1,82 @@
-# Google ADK and AI Models
-google-adk>=1.0.0
-google-genai>=0.7.0
-litellm>=0.4.0
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
 
-# API Clients
-anthropic>=0.7.0
-notion-client>=2.2.1
-google-api-python-client>=2.108.0
-google-auth-httplib2>=0.1.1
-google-auth-oauthlib>=1.1.0
+# HTTP and Web
+httpx==0.25.2
+aiohttp==3.9.1
+requests==2.31.0
+beautifulsoup4==4.12.2
+lxml==4.9.3
 
 # Data Processing
-pandas>=2.1.0
-numpy>=1.24.0
-aiofiles>=23.2.1
+pandas==2.1.4
+numpy==1.25.2
+python-dateutil==2.8.2
 
-# Web Scraping and Data Collection
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
-requests>=2.31.0
-yfinance>=0.2.0
+# Financial Data
+yfinance==0.2.28
+alpha-vantage==2.3.1
 
-# Web Framework
-fastapi>=0.104.0
-uvicorn>=0.24.0
+# Web Scraping
+selenium==4.15.2
+webdriver-manager==4.0.1
 
-# Async and Concurrency
-asyncio
-aiohttp>=3.9.0
+# Caching and Storage
+redis==5.0.1
+sqlalchemy==2.0.23
+alembic==1.13.1
 
-# Logging and Monitoring
-structlog>=23.2.0
-prometheus-client>=0.19.0
+# Database Drivers
+psycopg2-binary==2.9.9
+asyncpg==0.29.0
 
-# Configuration Management
-python-dotenv>=1.0.0
-pydantic>=2.5.0
-pydantic-settings>=2.1.0
+# Monitoring and Performance
+psutil==5.9.6
+prometheus-client==0.19.0
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Configuration and Environment
+python-dotenv==1.0.0
+pyyaml==6.0.1
 
 # Testing
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-pytest-mock>=3.12.0
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+httpx==0.25.2
 
-# Development
-black>=23.0.0
-flake8>=6.0.0
-mypy>=1.7.0
+# Development Tools
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+pre-commit==3.6.0
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.4.8
+
+# Utilities
+click==8.1.7
+rich==13.7.0
+typer==0.9.0
+
+# Optional: Machine Learning (for future enhancements)
+# scikit-learn==1.3.2
+# transformers==4.36.2
+# torch==2.1.1
+
+# Optional: Advanced Analytics
+# plotly==5.17.0
+# dash==2.14.2
+
+# Optional: Cloud Services
+# boto3==1.34.0
+# google-cloud-storage==2.10.0
+# azure-storage-blob==12.19.0

@@ -11,3 +11,6 @@
 {"timestamp": "2025-10-05T21:41:29.687304", "operation": "monitored_operation", "duration": 1.1920928955078125e-06, "success": true, "details": {}}
 {"timestamp": "2025-10-05T21:41:29.687541", "operation": "monitored_operation", "duration": 9.5367431640625e-07, "success": true, "details": {}}
 {"timestamp": "2025-10-05T21:41:29.687658", "operation": "monitored_operation", "duration": 9.5367431640625e-07, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:51:10.838778", "operation": "test_operation", "duration": 0.1, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:53:39.556510", "operation": "test_operation", "duration": 0.1, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:54:17.351665", "operation": "test_operation", "duration": 0.1, "success": true, "details": {}}
