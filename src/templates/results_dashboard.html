@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results & Reports - Research Workflow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .results-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            border-radius: 15px;
+        }
+        .results-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .swot-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .swot-quadrant {
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 200px;
+        }
+        .strengths { background: linear-gradient(135deg, #d4edda, #c3e6cb); }
+        .weaknesses { background: linear-gradient(135deg, #f8d7da, #f5c6cb); }
+        .opportunities { background: linear-gradient(135deg, #d1ecf1, #bee5eb); }
+        .threats { background: linear-gradient(135deg, #fff3cd, #ffeaa7); }
+        .insight-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007bff;
+        }
+        .confidence-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #e9ecef;
+            overflow: hidden;
+        }
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc3545, #ffc107, #28a745);
+            transition: width 0.3s;
+        }
+        .recommendation-card {
+            border-left: 4px solid #28a745;
+            background: #f8f9fa;
+        }
+        .data-source-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+        }
+        .metric-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 bg-dark p-0" style="min-height: 100vh;">
+                <div class="p-3">
+                    <h4 class="text-white mb-4">
+                        <i class="fas fa-search me-2"></i>
+                        Research Workflow
+                    </h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/dashboard">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/questionnaire">
+                                <i class="fas fa-clipboard-list me-2"></i>
+                                Research Foundation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/research-plans">
+                                <i class="fas fa-project-diagram me-2"></i>
+                                Research Plans
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/data-collection-config">
+                                <i class="fas fa-database me-2"></i>
+                                Data Collection
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light active" href="#results">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Results & Reports
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 p-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="h3 mb-1">Results & Reports</h1>
+                        <p class="text-muted mb-0">View and analyze your research results</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary me-2" onclick="exportResults()">
+                            <i class="fas fa-download me-2"></i>Export Results
+                        </button>
+                        <button class="btn btn-primary" onclick="generateNewReport()">
+                            <i class="fas fa-plus me-2"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Plan Selector -->
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <div class="card results-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-filter me-2"></i>Select Research Plan
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <select class="form-select" id="planSelector" onchange="loadPlanResults()">
+                                    <option value="">Select a research plan...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card results-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>Plan Status
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="planStatus">
+                                    <p class="text-muted mb-0">Select a plan to view status</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Content -->
+                <div id="resultsContent" style="display: none;">
+                    <!-- Key Metrics -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card metric-highlight">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-database fa-2x mb-2"></i>
+                                    <div class="h4 mb-1" id="totalDataItems">0</div>
+                                    <div>Data Items Collected</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card metric-highlight">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-lightbulb fa-2x mb-2"></i>
+                                    <div class="h4 mb-1" id="totalInsights">0</div>
+                                    <div>Insights Generated</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card metric-highlight">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-target fa-2x mb-2"></i>
+                                    <div class="h4 mb-1" id="strategicRecommendations">0</div>
+                                    <div>Strategic Recommendations</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card metric-highlight">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-star fa-2x mb-2"></i>
+                                    <div class="h4 mb-1" id="qualityScore">0%</div>
+                                    <div>Overall Quality Score</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Collection Summary -->
+                    <div class="row mb-4">
+                        <div class="col-lg-8">
+                            <div class="card results-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-chart-pie me-2"></i>Data Collection Summary
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="dataCollectionChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card results-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-list me-2"></i>Data Sources Used
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="dataSourcesList">
+                                        <!-- Data sources will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SWOT Analysis -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card results-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-th me-2"></i>SWOT Analysis Matrix
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="swot-matrix">
+                                        <div class="swot-quadrant strengths">
+                                            <h6 class="fw-bold text-success mb-3">
+                                                <i class="fas fa-plus-circle me-2"></i>Strengths
+                                            </h6>
+                                            <div id="strengthsList">
+                                                <!-- Strengths will be populated here -->
+                                            </div>
+                                        </div>
+                                        <div class="swot-quadrant weaknesses">
+                                            <h6 class="fw-bold text-danger mb-3">
+                                                <i class="fas fa-minus-circle me-2"></i>Weaknesses
+                                            </h6>
+                                            <div id="weaknessesList">
+                                                <!-- Weaknesses will be populated here -->
+                                            </div>
+                                        </div>
+                                        <div class="swot-quadrant opportunities">
+                                            <h6 class="fw-bold text-info mb-3">
+                                                <i class="fas fa-arrow-up me-2"></i>Opportunities
+                                            </h6>
+                                            <div id="opportunitiesList">
+                                                <!-- Opportunities will be populated here -->
+                                            </div>
+                                        </div>
+                                        <div class="swot-quadrant threats">
+                                            <h6 class="fw-bold text-warning mb-3">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>Threats
+                                            </h6>
+                                            <div id="threatsList">
+                                                <!-- Threats will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strategic Recommendations -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card results-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-chess me-2"></i>Strategic Recommendations
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="recommendationsList">
+                                        <!-- Recommendations will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Insights -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card results-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-lightbulb me-2"></i>Key Insights
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="insightsList">
+                                        <!-- Insights will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Actions -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card results-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-file-alt me-2"></i>Report Actions
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-primary w-100 mb-2" onclick="viewFullReport()">
+                                                <i class="fas fa-eye me-2"></i>View Full Report
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-success w-100 mb-2" onclick="downloadPDF()">
+                                                <i class="fas fa-file-pdf me-2"></i>Download PDF
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-info w-100 mb-2" onclick="downloadExcel()">
+                                                <i class="fas fa-file-excel me-2"></i>Download Excel
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-warning w-100 mb-2" onclick="shareResults()">
+                                                <i class="fas fa-share me-2"></i>Share Results
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results Message -->
+                <div id="noResultsMessage" class="text-center py-5">
+                    <i class="fas fa-chart-line fa-4x text-muted mb-4"></i>
+                    <h4 class="text-muted">No Results Available</h4>
+                    <p class="text-muted">Select a completed research plan to view results and reports.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/research-plans'">
+                        <i class="fas fa-plus me-2"></i>Create Research Plan
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentPlanId = null;
+        let currentResults = null;
+
+        // Load available research plans
+        async function loadResearchPlans() {
+            try {
+                const response = await fetch('/research-plans/list');
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const plans = data.plans || [];
+                    const selector = document.getElementById('planSelector');
+                    
+                    selector.innerHTML = '<option value="">Select a research plan...</option>';
+                    plans.forEach(plan => {
+                        const option = document.createElement('option');
+                        option.value = plan.id;
+                        option.textContent = `${plan.title} (${plan.status})`;
+                        selector.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading research plans:', error);
+            }
+        }
+
+        // Load results for selected plan
+        async function loadPlanResults() {
+            const planId = document.getElementById('planSelector').value;
+            if (!planId) {
+                document.getElementById('resultsContent').style.display = 'none';
+                document.getElementById('noResultsMessage').style.display = 'block';
+                return;
+            }
+
+            currentPlanId = planId;
+            
+            try {
+                // Load plan status
+                const statusResponse = await fetch(`/research-plans/${planId}`);
+                const statusData = await statusResponse.json();
+                
+                if (statusData.status === 'success') {
+                    displayPlanStatus(statusData.plan);
+                }
+
+                // Load results (simulated for now)
+                loadSimulatedResults(planId);
+                
+            } catch (error) {
+                console.error('Error loading plan results:', error);
+            }
+        }
+
+        function displayPlanStatus(plan) {
+            const statusContainer = document.getElementById('planStatus');
+            const statusClass = getStatusClass(plan.status);
+            
+            statusContainer.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Status:</span>
+                    <span class="badge ${statusClass}">${plan.status}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <span>Created:</span>
+                    <span>${new Date(plan.created_at).toLocaleDateString()}</span>
+                </div>
+                ${plan.completed_at ? `
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <span>Completed:</span>
+                    <span>${new Date(plan.completed_at).toLocaleDateString()}</span>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        function getStatusClass(status) {
+            switch (status?.toLowerCase()) {
+                case 'completed': return 'bg-success';
+                case 'active': return 'bg-primary';
+                case 'paused': return 'bg-warning';
+                case 'cancelled': return 'bg-danger';
+                default: return 'bg-secondary';
+            }
+        }
+
+        function loadSimulatedResults(planId) {
+            // Simulate loading results
+            currentResults = {
+                totalDataItems: 45,
+                totalInsights: 12,
+                strategicRecommendations: 4,
+                qualityScore: 87,
+                dataCollection: {
+                    financial: 12,
+                    news: 15,
+                    academic: 8,
+                    government: 6,
+                    competitive: 4
+                },
+                swot: {
+                    strengths: [
+                        { description: "Strong market position with significant market cap", confidence: 0.95 },
+                        { description: "Advanced AI technology capabilities", confidence: 0.85 },
+                        { description: "Established customer base and brand recognition", confidence: 0.8 }
+                    ],
+                    weaknesses: [
+                        { description: "High customer acquisition costs", confidence: 0.7 },
+                        { description: "Limited international presence", confidence: 0.75 }
+                    ],
+                    opportunities: [
+                        { description: "Growing demand for AI-powered tax software solutions", confidence: 0.9 },
+                        { description: "Expansion into international markets", confidence: 0.8 },
+                        { description: "Partnership opportunities with financial institutions", confidence: 0.85 }
+                    ],
+                    threats: [
+                        { description: "Intense competition from new AI startups", confidence: 0.85 },
+                        { description: "Regulatory changes in tax preparation industry", confidence: 0.8 }
+                    ]
+                },
+                recommendations: [
+                    {
+                        type: "S-O (Leverage Strengths for Opportunities)",
+                        description: "Leverage strong market position and AI capabilities to capitalize on growing demand for AI-powered tax software solutions",
+                        priority: "High",
+                        confidence: 0.9
+                    },
+                    {
+                        type: "W-T (Minimize Weaknesses to avoid Threats)",
+                        description: "Address high customer acquisition costs and limited international presence to mitigate intense competition",
+                        priority: "High",
+                        confidence: 0.8
+                    }
+                ],
+                insights: [
+                    { description: "AI technology trend identified in tax software market with 15% efficiency gains", confidence: 0.9, source: "Academic Research" },
+                    { description: "Market disruption from new AI-powered competitors with significant funding", confidence: 0.85, source: "News Analysis" },
+                    { description: "Strong market position with significant market cap and established customer base", confidence: 0.95, source: "Financial Data" }
+                ]
+            };
+
+            displayResults();
+        }
+
+        function displayResults() {
+            if (!currentResults) return;
+
+            // Show results content
+            document.getElementById('resultsContent').style.display = 'block';
+            document.getElementById('noResultsMessage').style.display = 'none';
+
+            // Update metrics
+            document.getElementById('totalDataItems').textContent = currentResults.totalDataItems;
+            document.getElementById('totalInsights').textContent = currentResults.totalInsights;
+            document.getElementById('strategicRecommendations').textContent = currentResults.strategicRecommendations;
+            document.getElementById('qualityScore').textContent = currentResults.qualityScore + '%';
+
+            // Create data collection chart
+            createDataCollectionChart();
+
+            // Display SWOT analysis
+            displaySWOTAnalysis();
+
+            // Display recommendations
+            displayRecommendations();
+
+            // Display insights
+            displayInsights();
+        }
+
+        function createDataCollectionChart() {
+            const ctx = document.getElementById('dataCollectionChart').getContext('2d');
+            const data = currentResults.dataCollection;
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: [
+                            '#007bff',
+                            '#28a745',
+                            '#ffc107',
+                            '#dc3545',
+                            '#6f42c1'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function displaySWOTAnalysis() {
+            // Display strengths
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = currentResults.swot.strengths.map(item => `
+                <div class="insight-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">${item.description}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="confidence-bar mb-1" style="width: 60px;">
+                                <div class="confidence-fill" style="width: ${item.confidence * 100}%"></div>
+                            </div>
+                            <small class="text-muted">${Math.round(item.confidence * 100)}%</small>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Display weaknesses
+            const weaknessesList = document.getElementById('weaknessesList');
+            weaknessesList.innerHTML = currentResults.swot.weaknesses.map(item => `
+                <div class="insight-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">${item.description}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="confidence-bar mb-1" style="width: 60px;">
+                                <div class="confidence-fill" style="width: ${item.confidence * 100}%"></div>
+                            </div>
+                            <small class="text-muted">${Math.round(item.confidence * 100)}%</small>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Display opportunities
+            const opportunitiesList = document.getElementById('opportunitiesList');
+            opportunitiesList.innerHTML = currentResults.swot.opportunities.map(item => `
+                <div class="insight-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">${item.description}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="confidence-bar mb-1" style="width: 60px;">
+                                <div class="confidence-fill" style="width: ${item.confidence * 100}%"></div>
+                            </div>
+                            <small class="text-muted">${Math.round(item.confidence * 100)}%</small>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Display threats
+            const threatsList = document.getElementById('threatsList');
+            threatsList.innerHTML = currentResults.swot.threats.map(item => `
+                <div class="insight-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold">${item.description}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="confidence-bar mb-1" style="width: 60px;">
+                                <div class="confidence-fill" style="width: ${item.confidence * 100}%"></div>
+                            </div>
+                            <small class="text-muted">${Math.round(item.confidence * 100)}%</small>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayRecommendations() {
+            const recommendationsList = document.getElementById('recommendationsList');
+            recommendationsList.innerHTML = currentResults.recommendations.map(rec => `
+                <div class="card recommendation-card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="card-title mb-0">${rec.type}</h6>
+                            <span class="badge ${rec.priority === 'High' ? 'bg-danger' : 'bg-warning'}">${rec.priority}</span>
+                        </div>
+                        <p class="card-text">${rec.description}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Confidence: ${Math.round(rec.confidence * 100)}%</small>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayInsights() {
+            const insightsList = document.getElementById('insightsList');
+            insightsList.innerHTML = currentResults.insights.map(insight => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <p class="card-text mb-2">${insight.description}</p>
+                                <span class="badge bg-secondary data-source-badge">${insight.source}</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="confidence-bar mb-1" style="width: 80px;">
+                                    <div class="confidence-fill" style="width: ${insight.confidence * 100}%"></div>
+                                </div>
+                                <small class="text-muted">${Math.round(insight.confidence * 100)}% confidence</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Action functions
+        function exportResults() {
+            alert('Export functionality will be implemented');
+        }
+
+        function generateNewReport() {
+            window.location.href = '/questionnaire';
+        }
+
+        function viewFullReport() {
+            if (currentPlanId) {
+                window.open(`/research-report-html/${currentPlanId}`, '_blank');
+            }
+        }
+
+        function downloadPDF() {
+            alert('PDF download functionality will be implemented');
+        }
+
+        function downloadExcel() {
+            alert('Excel download functionality will be implemented');
+        }
+
+        function shareResults() {
+            alert('Share functionality will be implemented');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadResearchPlans();
+        });
+    </script>
+</body>
+</html>

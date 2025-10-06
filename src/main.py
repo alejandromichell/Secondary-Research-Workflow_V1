@@ -6,7 +6,7 @@ This file sets up a FastAPI server to handle research requests.
 from typing import List, Optional
 
 from fastapi import FastAPI, BackgroundTasks
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from pydantic import BaseModel
 
 from .workflows.simple_live_workflow import SimpleLiveResearchWorkflow
@@ -1508,6 +1508,28 @@ async def test_data_source(source_name: str, test_query: str = "test query"):
             "error": str(e),
             "message": f"Failed to test source {source_name}"
         }
+
+# --- User Interface Endpoints ---
+
+@app.get("/")
+async def root():
+    """Root endpoint that serves the main landing page."""
+    return FileResponse("src/templates/index.html")
+
+@app.get("/dashboard")
+async def dashboard():
+    """Dashboard endpoint that serves the main dashboard."""
+    return FileResponse("src/templates/dashboard.html")
+
+@app.get("/data-collection-config")
+async def data_collection_config():
+    """Data collection configuration endpoint."""
+    return FileResponse("src/templates/data_collection_config.html")
+
+@app.get("/results")
+async def results_dashboard():
+    """Results and reports dashboard endpoint."""
+    return FileResponse("src/templates/results_dashboard.html")
 
 @app.get("/api/status")
 async def api_status():
