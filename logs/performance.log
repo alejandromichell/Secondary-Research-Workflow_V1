@@ -1,0 +1,13 @@
+{"timestamp": "2025-10-05T21:39:33.817475", "operation": "decorated_operation", "duration": 0.105010986328125, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:39:52.188363", "operation": "decorated_operation", "duration": 0.10432577133178711, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:40:15.739791", "operation": "decorated_operation", "duration": 0.10052704811096191, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:40:39.230100", "operation": "decorated_operation", "duration": 0.10125398635864258, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:01.811249", "operation": "decorated_operation", "duration": 0.10501408576965332, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:06.919394", "operation": "monitored_operation", "duration": 5.9604644775390625e-06, "success": false, "details": {"error": "Simulated error"}}
+{"timestamp": "2025-10-05T21:41:07.025752", "operation": "monitored_operation", "duration": 5.9604644775390625e-06, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:07.025957", "operation": "monitored_operation", "duration": 1.1920928955078125e-06, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:07.026050", "operation": "monitored_operation", "duration": 1.1920928955078125e-06, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:24.579328", "operation": "decorated_operation", "duration": 0.10480093955993652, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:29.687304", "operation": "monitored_operation", "duration": 1.1920928955078125e-06, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:29.687541", "operation": "monitored_operation", "duration": 9.5367431640625e-07, "success": true, "details": {}}
+{"timestamp": "2025-10-05T21:41:29.687658", "operation": "monitored_operation", "duration": 9.5367431640625e-07, "success": true, "details": {}}
