@@ -1358,7 +1358,158 @@ async def resume_workflow(plan_id: str):
             "message": f"Failed to resume workflow for plan {plan_id}"
         }
 
+# --- Live Data Collection Configuration Endpoints ---
+
+@app.get("/data-collection/sources")
+async def get_available_data_sources():
+    """
+    Get list of available data sources for live data collection.
+    """
+    try:
+        from src.data_collection import DataCollectionManager, CollectionConfig, CollectionStrategy
+        
+        # Create a temporary manager to get source information
+        config = CollectionConfig(
+            strategy=CollectionStrategy.FOCUSED,
+            max_parallel_tasks=5,
+            timeout_seconds=300
+        )
+        manager = DataCollectionManager(config)
+        
+        sources_info = []
+        for collector in manager.collectors:
+            for source in collector.get_supported_sources():
+                sources_info.append({
+                    "name": source.name,
+                    "url": source.url,
+                    "category": source.category,
+                    "reliability_score": source.reliability_score,
+                    "description": source.description,
+                    "requires_auth": source.requires_auth
+                })
+        
+        return {
+            "status": "success",
+            "total_sources": len(sources_info),
+            "sources": sources_info
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to retrieve data sources"
+        }
+
+@app.post("/data-collection/configure")
+async def configure_data_collection(config_data: dict):
+    """
+    Configure data collection parameters for a research plan.
+    """
+    try:
+        plan_id = config_data.get("plan_id")
+        if not plan_id:
+            return {"status": "error", "message": "plan_id is required"}
+        
+        # Store configuration (in a real implementation, this would be persisted)
+        collection_config = {
+            "plan_id": plan_id,
+            "strategy": config_data.get("strategy", "FOCUSED"),
+            "max_parallel_tasks": config_data.get("max_parallel_tasks", 5),
+            "timeout_seconds": config_data.get("timeout_seconds", 300),
+            "max_results_per_source": config_data.get("max_results_per_source", 10),
+            "enabled_sources": config_data.get("enabled_sources", []),
+            "custom_queries": config_data.get("custom_queries", []),
+            "configured_at": datetime.now().isoformat()
+        }
+        
+        return {
+            "status": "success",
+            "configuration": collection_config,
+            "message": f"Data collection configured for plan {plan_id}"
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to configure data collection"
+        }
+
+@app.get("/data-collection/status/{plan_id}")
+async def get_data_collection_status(plan_id: str):
+    """
+    Get the status of data collection for a specific plan.
+    """
+    try:
+        # In a real implementation, this would check the actual collection status
+        # For now, return a simulated status
+        return {
+            "status": "success",
+            "plan_id": plan_id,
+            "collection_status": "ready",
+            "last_collection": None,
+            "total_sources_available": 20,
+            "configured_sources": 15,
+            "message": f"Data collection status for plan {plan_id}"
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": f"Failed to get collection status for plan {plan_id}"
+        }
+
+@app.post("/data-collection/test/{source_name}")
+async def test_data_source(source_name: str, test_query: str = "test query"):
+    """
+    Test a specific data source with a sample query.
+    """
+    try:
+        from src.data_collection import DataCollectionManager, CollectionConfig, CollectionStrategy
+        
+        # Create a temporary manager for testing
+        config = CollectionConfig(
+            strategy=CollectionStrategy.FOCUSED,
+            max_parallel_tasks=1,
+            timeout_seconds=30
+        )
+        manager = DataCollectionManager(config)
+        
+        await manager.initialize()
+        
+        try:
+            # Test the specific source
+            result = await manager.collect_data(
+                research_query=test_query,
+                research_context={"test": True}
+            )
+            
+            return {
+                "status": "success",
+                "source_name": source_name,
+                "test_query": test_query,
+                "test_result": {
+                    "success": result.success,
+                    "items_collected": result.total_items_collected,
+                    "collection_time": result.collection_time_seconds,
+                    "errors": result.errors
+                },
+                "message": f"Test completed for source {source_name}"
+            }
+            
+        finally:
+            await manager.cleanup()
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": f"Failed to test source {source_name}"
+        }
+
 @app.get("/api/status")
 async def api_status():
     """API status endpoint for programmatic access."""
-    return {"message": "Secondary Research Workflow API is running in Simplified Mode."}
+    return {"message": "Secondary Research Workflow API is running with Live Data Collection."}

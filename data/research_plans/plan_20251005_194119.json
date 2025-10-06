@@ -1,0 +1,158 @@
+{
+  "id": "plan_20251005_194119",
+  "title": "Workflow Simulation Plan",
+  "description": "Complete workflow simulation",
+  "status": "draft",
+  "created_at": "2025-10-05T19:41:19.115981",
+  "updated_at": "2025-10-05T19:41:19.115982",
+  "started_at": null,
+  "completed_at": null,
+  "tasks": [
+    {
+      "id": "plan_20251005_194119_task_001",
+      "title": "Develop Comprehensive Research Plan",
+      "description": "Create detailed research plan based on foundation context and research objectives",
+      "status": "pending",
+      "priority": 5,
+      "dependencies": [],
+      "estimated_duration": 30,
+      "actual_duration": null,
+      "assigned_agent": "ResearchPlanAgent",
+      "created_at": "2025-10-05T19:41:19.115972",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "planning",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_194119_task_002",
+      "title": "Plan Data Collection Strategy",
+      "description": "Identify and plan data collection from various sources (academic, financial, news, regulatory)",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_194119_task_001"
+      ],
+      "estimated_duration": 45,
+      "actual_duration": null,
+      "assigned_agent": "DataCollectionAgent",
+      "created_at": "2025-10-05T19:41:19.115974",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "planning",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_194119_task_003",
+      "title": "Execute Live Data Collection",
+      "description": "Collect live data from external APIs, web scraping, and real-time sources",
+      "status": "pending",
+      "priority": 5,
+      "dependencies": [
+        "plan_20251005_194119_task_002"
+      ],
+      "estimated_duration": 120,
+      "actual_duration": null,
+      "assigned_agent": "DataCollectionAgent",
+      "created_at": "2025-10-05T19:41:19.115976",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "data_collection",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_194119_task_004",
+      "title": "Analyze and Synthesize Collected Data",
+      "description": "Analyze collected data, identify patterns, and synthesize insights",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_194119_task_003"
+      ],
+      "estimated_duration": 90,
+      "actual_duration": null,
+      "assigned_agent": "SynthesisAgent",
+      "created_at": "2025-10-05T19:41:19.115977",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "analysis",
+        "context_section": "foundation_context"
+      }
+    },
+    {
+      "id": "plan_20251005_194119_task_005",
+      "title": "Conduct Comprehensive SWOT Analysis",
+      "description": "Perform SWOT analysis based on collected data and organizational context",
+      "status": "pending",
+      "priority": 4,
+      "dependencies": [
+        "plan_20251005_194119_task_004"
+      ],
+      "estimated_duration": 60,
+      "actual_duration": null,
+      "assigned_agent": "SWOTAnalysisAgent",
+      "created_at": "2025-10-05T19:41:19.115978",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "analysis",
+        "context_section": "swot_context"
+      }
+    },
+    {
+      "id": "plan_20251005_194119_task_006",
+      "title": "Generate Comprehensive Research Report",
+      "description": "Create final research report with findings, analysis, and recommendations",
+      "status": "pending",
+      "priority": 3,
+      "dependencies": [
+        "plan_20251005_194119_task_005"
+      ],
+      "estimated_duration": 45,
+      "actual_duration": null,
+      "assigned_agent": "ReportGenerationAgent",
+      "created_at": "2025-10-05T19:41:19.115980",
+      "started_at": null,
+      "completed_at": null,
+      "notes": [],
+      "metadata": {
+        "phase": "reporting",
+        "context_section": "foundation_context"
+      }
+    }
+  ],
+  "metadata": {
+    "research_context": {
+      "foundation_context": {
+        "research_foundation": {
+          "primary_objective": "Simulate complete research workflow",
+          "subject_scope": "AI Tax Software Market Analysis",
+          "critical_questions": "Market size, competitive landscape, technology trends",
+          "timeline": "Q1 2024 completion"
+        }
+      },
+      "swot_context": {
+        "swot_assessment": {
+          "business_context": "AI Tax Solutions Inc. - startup with 50 employees",
+          "analysis_scope": "Comprehensive organizational SWOT",
+          "stakeholder_requirements": "Executive team, strategic analysis"
+        }
+      }
+    },
+    "total_tasks": 6,
+    "completed_tasks": 0,
+    "progress_percentage": 0.0
+  }
+}
